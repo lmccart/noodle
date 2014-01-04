@@ -9,9 +9,11 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
-  //, mturk = require('mturk')(process.env.config);
 
 var app = module.exports = express();
+require('./config.js')(app, express);
+
+var mturk = require('mturk')(process.env.MTURK);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -25,13 +27,11 @@ app.use(app.router);
   app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-require('./config.js')(app, express);
-
 
 app.get('/', routes.index);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log(process.env.SECRETACCESSKEY);
+  console.log(mturk);
   console.log('Express server listening on port ' + app.get('port'));
 });
