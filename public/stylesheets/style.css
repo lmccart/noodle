@@ -1,10 +1,35 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px Helvetica, Arial, sans-serif;
 }
 a {
   color: #00B7FF;
 }
 .module {
-	margin: 40px 0;
+  margin: 40px 0;
+  display: none;
+  width: 100%;
+}
+
+.submodule {
+	display: none;
+}
+
+#query-selection,
+#action-selection {
+  display: none;
+}
+.button {
+	width: 150px;
+	height: 75px;
+	background: #00FFCC;
+	color: white;
+	margin: 0 10px 10px 0;
+	padding: 10px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.button:hover, .button.selected {
+	background: #99FF33;
 }

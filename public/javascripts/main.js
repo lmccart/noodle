@@ -1,0 +1,32 @@
+
+
+var trigger_category, trigger_specific;
+
+
+$('#trigger-selection').show();
+$('#trigger-selection .category').show();
+
+$('#trigger-selection .category .button').click(function(e){
+	$('#trigger-selection .category .button').each(function() {
+ 		if (e.target !== this) { $(this).removeClass('selected'); }
+	});
+	$(e.target).addClass('selected');
+	trigger_category = e.target.innerHTML;
+
+	var spec = '#trigger-selection .specific'+'.'+trigger_category;
+	console.log(spec);
+	$(spec).show();
+
+});
+
+
+$('#trigger-selection .specific .button').click(function(e){
+	console.log('hi');
+	$('#trigger-selection .specific .button').each(function() {
+ 		if (e.target !== this) { $(this).removeClass('selected'); }
+	});
+	$(e.target).addClass('selected');
+	trigger_specific = e.target.innerHTML;
+
+	$('#query-selection').show();
+});

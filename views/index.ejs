@@ -35,13 +35,31 @@
 		    <h1><%= title %></h1>
 
 		    <div class="module" id="trigger-selection">
-		    	<h2>Select the desired trigger</h2>
-	        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+
+		    	<div class="submodule category">
+			    	<h2>Select the desired trigger category</h2>
+			    	<div class='options'>
+			        <div class='button'>audio</div>
+			        <div class='button'>video</div>
+			        <div class='button'>GPIO</div>
+			        <div class='button'>date/time</div>
+			      </div>
+		      </div>
+
+		    	<div class="submodule specific audio">
+			    	<h2>Select the desired specific trigger</h2>
+			    	<div class='options'>
+			        <div class='button'>noise</div>
+			        <div class='button'>silence</div>
+			    	</div>
+		      </div>
 	      </div>
 
 		    <div class="module" id="query-selection">
-		    	<h2>Select the desired query</h2>
-	        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+		    	<h2>Input your desired query</h2>
+		    	<input></input>
+		    	<div class='options'>
+		      </div>
 	      </div>
 
 		    <div class="module" id="action-selection">
@@ -61,6 +79,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/main.js"></script>
 
   </body>
 </html>
