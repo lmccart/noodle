@@ -30,3 +30,9 @@ $('#trigger-selection .specific .button').click(function(e){
 
 	$('#query-selection').show();
 });
+
+
+$('#submit').click(function(e){
+	console.log('hi');
+	window.location = './confirm?q='+$('textarea#query').val();
+});

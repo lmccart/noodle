@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title><%= query %></title>
     <link rel='stylesheet' href='/stylesheets/bootstrap.css'>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
@@ -32,41 +32,8 @@
     <div class="container">
 
       <div class="starter-template">
-		    <h1><%= title %></h1>
+		    <h1><%= query %> HOORAY!</h1>
 
-		    <div class="module" id="trigger-selection">
-
-		    	<div class="submodule category">
-			    	<h2>Select the desired trigger category</h2>
-			    	<div class='options'>
-			        <div class='button'>audio</div>
-			        <div class='button'>video</div>
-			        <div class='button'>GPIO</div>
-			        <div class='button'>date/time</div>
-			      </div>
-		      </div>
-
-		    	<div class="submodule specific audio">
-			    	<h2>Select the desired specific trigger</h2>
-			    	<div class='options'>
-			        <div class='button'>noise</div>
-			        <div class='button'>silence</div>
-			    	</div>
-		      </div>
-	      </div>
-
-		    <div class="module" id="query-selection">
-		    	<h2>Input your desired query</h2>
-		    	<textarea id="query" cols="40" rows="5" name="query"></textarea>
-		    	<div class='options'>
-		      </div>
-			    <div id='submit' class='button'>OK!</div>
-	      </div>
-
-		    <div class="module" id="action-selection">
-		    	<h2>Select the desired action(s)</h2>
-	        <p class="lead"></p>
-	      </div>
 
 
 
