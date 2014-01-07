@@ -33,12 +33,8 @@
 
 
 
-	<Overview>
-		<Text>The next few questions are pretty random.</Text>
-	</Overview>
 
-
-	<!-- QUESTION TWO -->
+	<!-- QUESTION TWO 
 	<Question>
 		<QuestionIdentifier>002</QuestionIdentifier>
 		<DisplayName>Question 02</DisplayName>
@@ -57,11 +53,9 @@
 			</FreeTextAnswer>
 		</AnswerSpecification>
 	</Question>
+-->
 
-
-
-
-	<!-- QUESTION THREE -->
+	<!-- QUESTION THREE 
 	<Question>
 		<QuestionIdentifier>003</QuestionIdentifier>
 		<DisplayName>Question 03</DisplayName>
@@ -94,10 +88,10 @@
 			</SelectionAnswer>
 		</AnswerSpecification>
 	</Question>
+	-->
 
 
-
-	<!-- QUESTION FOUR -->
+	<!-- QUESTION FOUR 
 	<Question>
 		<QuestionIdentifier>004</QuestionIdentifier>
 		<DisplayName>Question 04</DisplayName>
@@ -113,6 +107,6 @@
 				<MinFileSizeInBytes>1000</MinFileSizeInBytes>
 			</FileUploadAnswer>
 		</AnswerSpecification>
-	</Question>
+	</Question>-->
 
 </QuestionForm>
