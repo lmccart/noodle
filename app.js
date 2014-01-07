@@ -76,38 +76,4 @@ mturk.RegisterHITType(RegisterHITTypeOptions, function(err, HITTypeId){
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
-
-
-
-//   var price = new Price("2.50", "USD");
-//   var title = "Touch Your Toes";
-//   var description = "Exercise is good for you!";
-//   var duration = 60 * 10; // #seconds Worker has to complete after accepting
-//   var options = { keywords: "fitness, health", autoApprovalDelayInSeconds: 3600 };
-  
-//   HITType.create(title, description, price, duration, options, function(err, hitType) {
-//       console.log("Created HITType "+hitType.id);
-
-//       // 2. Render the Question XML
-//       var options = {'title': "What is your favorite color?"};
-//       var templateFile = __dirname+"/views/question.xml.ejs";
-//       ejs.renderFile(templateFile, options, function(err, questionXML) {
-//           console.log("Rendered XML: "+questionXML);
-
-//           // 3. Create a HIT
-//           var options = {maxAssignments: 5}
-//           var lifeTimeInSeconds = 3600; // 1 hour
-//           HIT.create(hitType.id, questionXML, lifeTimeInSeconds, {}, function(err, hit){
-//               console.log("Created HIT "+hit.id);
-//           });
-//       });
-//   });
-
-  // mturk.on('HITReviewable', function(hitId) {
-  // console.log('HIT with ID ' + hitId + ' HITReviewable');
-  // HIT.getAssignments(hitId, {}, function(err, numResults, totalNumResults, pageNumber, assignments) {
-  //   assignments.forEach(function(assignment) {
-  //     // review, then approve or decline
-  //   });
-  // });
- });
+});
