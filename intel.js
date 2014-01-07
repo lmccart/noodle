@@ -3,7 +3,8 @@ module.exports = function(settings) {
 
 	var creds = require('./config'),
 			mturk  = require('./mturk')({creds: creds, sandbox: true}),
-			fs = require('fs');
+			fs = require('fs'),
+			util = require("util");
 
 	var RegisterHITTypeOptions = { 
 	  Title: "Mturk Nodejs module RegisterHITType test"
@@ -16,6 +17,8 @@ module.exports = function(settings) {
 	};
 
 	var intel = {};
+
+	intel.openHits = [];
 	
 	intel.createHit = function(params){
 		console.log(params);
@@ -40,11 +43,37 @@ module.exports = function(settings) {
 		    mturk.CreateHIT(CreateHITOptions, function(err, HITId){
 		      if (err) throw err;
 		      console.log("Created HIT "+HITId);
+		      intel.openHits.push(HITId);
 		    });  // mturk.CreateHIT
 		  });
 		});
 
 	}
+
+	intel.checkForHits = function() {
+		mturk.GetReviewableHITs({}, function(err, result){
+      var hits = (result.HIT instanceof Array) ? result.HIT : [result.HIT];
+      hits.forEach(function(HIT){
+      	if (HIT) {
+	      	console.log(HIT);
+	        // For each reviewable HIT, get the assignments that have been submitted
+	        mturk.GetAssignmentsForHIT({ "HITId": HIT.HITId }, function(err, result){
+	          var assignments = (result.Assignment instanceof Array) ? result.Assignment : [result.Assignment];
+	          assignments.forEach(function(assignment){
+	            console.log( util.inspect(assignment) );
+
+	            // Here you could do
+	            // mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+	                    // Now assignment "id" is approved!
+	            // });
+	          });
+	        });
+	      }
+      });
+		});
+	};
+
+	var checkInterval = setInterval(intel.checkForHits, 5000);
 
 	return intel;
 };
