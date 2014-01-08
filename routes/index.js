@@ -10,6 +10,15 @@ exports.index = function(req, res){
 };
 
 exports.confirm = function(req, res){
-	intel.createHit(req.query.q);
+	intel.createHit( {'title':req.query.q} );
   res.render('confirm', { query: req.query.q });
+};
+
+exports.remove = function(req, res){
+	intel.removeHit( {'HITId':req.query.hit} );
+  res.render('manage', { tasks: intel.tasks });
+};
+
+exports.manage = function(req, res){
+  res.render('manage', { tasks: intel.tasks });
 };

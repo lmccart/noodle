@@ -15,16 +15,16 @@ module.exports = function(settings) {
 	  , Reward: {Amount: 0.01, CurrencyCode: "USD"}
 	  , AssignmentDurationInSeconds: 3600
 	  , AutoApprovalDelayInSeconds: 3600
-	  , QualificationRequirement: [mturk.QualificationRequirements.Adults]
+    , QualificationRequirement: []
 	};
 
 	var intel = {};
 
-	intel.openHits = [];
+	intel.tasks = [];
 	
 	intel.createHit = function(params){
-		console.log(params);
-		RegisterHITTypeOptions.Title = params;
+		//console.log(params);
+		RegisterHITTypeOptions.Title = params.title;
 
 			// Step 1: First we have to create a HITTypeId
 		mturk.RegisterHITType(RegisterHITTypeOptions, function(err, HITTypeId){
@@ -45,10 +45,26 @@ module.exports = function(settings) {
 		    mturk.CreateHIT(CreateHITOptions, function(err, HITId){
 		      if (err) throw err;
 		      console.log("Created HIT "+HITId);
-		      intel.openHits.push(HITId);
+		      intel.tasks.push(HITId);
 		    });  // mturk.CreateHIT
 		  });
 		});
+
+	}
+
+	intel.removeHit = function(params){
+
+		var index = intel.tasks.indexOf(params.HITId);
+		if (index > -1) {
+		    intel.tasks.splice(index, 1);
+		}
+
+		mturk.DisableHIT(params, function(err, HITId) {
+			if (err) console.log(err);
+			console.log("disabled hit "+HITId);
+		});
+
+
 
 	}
 
@@ -64,9 +80,9 @@ module.exports = function(settings) {
 	          assignments.forEach(function(assignment){
 	          	if (assignment.AssignmentStatus === "Submitted") {
 
-		            // mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
-		            // 	console.log("approved "+assignment.AssignmentId);
-		            // });
+		            mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+		            	console.log("approved "+assignment.AssignmentId);
+		            });
 
 								parseString(assignment.Answer, function (err, result) {
 										var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
