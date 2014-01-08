@@ -17,7 +17,7 @@ module.exports = function(settings) {
 	  var lines = data.match(/[^\r\n]+/g);
 	  if (lines) {
 	  	lines.forEach(function(line){
-	  		tasks.push(line); 
+	  		intel.tasks.push(line); 
 	  	});
 	  }
 	});
@@ -58,7 +58,8 @@ module.exports = function(settings) {
 		      console.log("Created HIT "+HITId);
 		      intel.tasks.push(HITId);
 
-					fs.appendFile('./data/tasks.txt', HITId+'\n', 'utf8', function (err) {
+		      // sync storage
+					fs.writeFile('./data/tasks.txt', intel.tasks.join('\n'), function (err) {
 					  if (err) throw err;
 					});
 
@@ -73,6 +74,11 @@ module.exports = function(settings) {
 		var index = intel.tasks.indexOf(params.HITId);
 		if (index > -1) {
 		    intel.tasks.splice(index, 1);
+
+				// sync storage    
+				fs.writeFile('./data/tasks.txt', intel.tasks.join('\n'), function (err) {
+				  if (err) throw err;
+				});
 		}
 
 		mturk.DisableHIT(params, function(err, HITId) {
