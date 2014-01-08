@@ -100,23 +100,23 @@ module.exports = function(settings) {
 	        mturk.GetAssignmentsForHIT({ "HITId": HIT.HITId }, function(err, result){
 	          var assignments = (result.Assignment instanceof Array) ? result.Assignment : [result.Assignment];
 	          assignments.forEach(function(assignment){
-	          	if (assignment.AssignmentStatus === "Submitted") {
+	          	if (assignment) {
+		          	if (assignment.AssignmentStatus === "Submitted") {
 
-		            mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
-		            	console.log("approved "+assignment.AssignmentId);
-		            });
+			            mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+			            	console.log("approved "+assignment.AssignmentId);
+			            });
 
-								parseString(assignment.Answer, function (err, result) {
-										var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
-								    console.dir(answer);
+									parseString(assignment.Answer, function (err, result) {
+											var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
+									    console.dir(answer);
 
-								    // act on the result
-								    intel.actOnResponse({"hit": HIT.HITId, "response": answer});
+									    // act on the result
+									    intel.actOnResponse({"hit": HIT.HITId, "response": answer});
 
-								});
-
+									});
+								}
 	        		}
-
 	          });
 	        });
 		      

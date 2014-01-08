@@ -35,9 +35,9 @@
 		    <h1>MANAGE</h1>
 
         <% tasks.forEach(function(el, index) { %>
-          <div id=<%= el %>>
-            <%= el %>
-            <div id='remove' class='button'>remove</div>
+          <div class="task" id=<%= el %>>
+            <%= el %><br>
+            <div class='remove button'>remove</div>
           </div>
           
         <% }); %>

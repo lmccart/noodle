@@ -45,3 +45,7 @@ a, a:hover {
 	text-decoration: none;
 	color: white;
 }
+
+.task {
+	margin: 0 0 20px 0;
+}

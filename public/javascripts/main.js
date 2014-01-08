@@ -37,7 +37,7 @@ $('#submit').click(function(e){
 	window.location = './confirm?q='+$('textarea#query').val();
 });
 
-$('#remove').click(function(e){
+$('.remove').click(function(e){
 	var hit = $(e.target).parent()[0].id;
 	console.log(hit);
 	window.location = './remove?hit='+hit;
