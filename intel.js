@@ -8,6 +8,20 @@ module.exports = function(settings) {
 			fs = require('fs'),
 			util = require("util");
 
+	var intel = {};
+
+	intel.tasks = [];
+
+	// load stored tasks
+	fs.readFile('./data/tasks.txt', 'utf8', function(error, data) {
+	  var lines = data.match(/[^\r\n]+/g);
+	  if (lines) {
+	  	lines.forEach(function(line){
+	  		tasks.push(line); 
+	  	});
+	  }
+	});
+
 	var RegisterHITTypeOptions = { 
 	  Title: "Mturk Nodejs module RegisterHITType test"
 	  , Keywords: "keyword1, keyword2, keyword3" 
@@ -18,9 +32,6 @@ module.exports = function(settings) {
     , QualificationRequirement: []
 	};
 
-	var intel = {};
-
-	intel.tasks = [];
 	
 	intel.createHit = function(params){
 		//console.log(params);
@@ -46,7 +57,12 @@ module.exports = function(settings) {
 		      if (err) throw err;
 		      console.log("Created HIT "+HITId);
 		      intel.tasks.push(HITId);
-		    });  // mturk.CreateHIT
+
+					fs.appendFile('./data/tasks.txt', HITId+'\n', 'utf8', function (err) {
+					  if (err) throw err;
+					});
+
+		    }); 
 		  });
 		});
 
