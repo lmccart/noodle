@@ -16,5 +16,6 @@ node_modules
 .bin/
 
 config.js
+config.json
 
 *.DS_Store

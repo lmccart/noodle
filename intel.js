@@ -1,14 +1,27 @@
 
 module.exports = function(settings) {
 
-	var parseString = require('xml2js').parseString;
-
-	var creds = require('./config'),
-			mturk  = require('./mturk')({creds: creds, sandbox: false}),
-			fs = require('fs'),
-			util = require("util");
+	var fs = require('fs')
+			, util = require("util")
+			, parseString = require('xml2js').parseString;
 
 	var intel = {};
+	intel.mturk = null;
+	intel.checkInterval = null;
+
+	// attempt login from config file
+	fs.readFile('./data/config.json', 'utf8', function(err, data) {
+	  data = JSON.parse(data);
+	  if (data.accessKey && data.secretKey) {
+	    intel.mturk =  require('./mturk')({creds: data, sandbox: false});
+	    intel.checkInterval = setInterval(intel.checkForHits, 5000);
+	  }
+	});
+
+
+			// fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
+			//   if (err) throw err;
+			// });
 
 	intel.tasks = [];
 
@@ -38,7 +51,7 @@ module.exports = function(settings) {
 		RegisterHITTypeOptions.Title = params.title;
 
 			// Step 1: First we have to create a HITTypeId
-		mturk.RegisterHITType(RegisterHITTypeOptions, function(err, HITTypeId){
+		intel.mturk.RegisterHITType(RegisterHITTypeOptions, function(err, HITTypeId){
 		  if (err) throw err;
 
 		  fs.readFile("./data/QuestionForm.xml", 'utf8', function(err, questionXML) {
@@ -53,7 +66,7 @@ module.exports = function(settings) {
 		    };
 
 		    // Step 2: Now create the HIT itself.
-		    mturk.CreateHIT(CreateHITOptions, function(err, HITId){
+		    intel.mturk.CreateHIT(CreateHITOptions, function(err, HITId){
 		      if (err) throw err;
 		      console.log("Created HIT "+HITId);
 		      intel.tasks.push(HITId);
@@ -81,7 +94,7 @@ module.exports = function(settings) {
 				});
 		}
 
-		mturk.DisableHIT(params, function(err, HITId) {
+		intel.mturk.DisableHIT(params, function(err, HITId) {
 			if (err) console.log(err);
 			console.log("disabled hit "+HITId);
 		});
@@ -91,19 +104,19 @@ module.exports = function(settings) {
 	}
 
 	intel.checkForHits = function() {
-		mturk.GetReviewableHITs({}, function(err, result){
+		intel.mturk.GetReviewableHITs({}, function(err, result){
 			if (result) {
 	      var hits = (result.HIT instanceof Array) ? result.HIT : [result.HIT];
 	      hits.forEach(function(HIT){
 	      	console.log(HIT);
 	        // For each reviewable HIT, get the assignments that have been submitted
-	        mturk.GetAssignmentsForHIT({ "HITId": HIT.HITId }, function(err, result){
+	        intel.mturk.GetAssignmentsForHIT({ "HITId": HIT.HITId }, function(err, result){
 	          var assignments = (result.Assignment instanceof Array) ? result.Assignment : [result.Assignment];
 	          assignments.forEach(function(assignment){
 	          	if (assignment) {
 		          	if (assignment.AssignmentStatus === "Submitted") {
 
-			            mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+			            intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
 			            	console.log("approved "+assignment.AssignmentId);
 			            });
 
@@ -128,9 +141,6 @@ module.exports = function(settings) {
 	intel.actOnResponse = function(resp) {
 		console.log(resp);
 	};
-
-	//var checkInterval = setInterval(intel.checkForHits, 5000);
-	intel.checkForHits();
 
 	return intel;
 };
