@@ -11,17 +11,12 @@ module.exports = function(settings) {
 
 	// attempt login from config file
 	fs.readFile('./data/config.json', 'utf8', function(err, data) {
-	  data = JSON.parse(data);
+	  if (data) data = JSON.parse(data);
 	  if (data.accessKey && data.secretKey) {
-	    intel.mturk =  require('./mturk')({creds: data, sandbox: false});
-	    intel.checkInterval = setInterval(intel.checkForHits, 5000);
+	  	intel.login(data);
 	  }
 	});
 
-
-			// fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
-			//   if (err) throw err;
-			// });
 
 	intel.tasks = [];
 
@@ -45,7 +40,24 @@ module.exports = function(settings) {
     , QualificationRequirement: []
 	};
 
+	intel.login = function(params) {
+    intel.mturk =  require('./mturk')({creds: params, sandbox: false});
+    intel.checkInterval = setInterval(intel.checkForHits, 5000);
+
+		fs.readFile('./data/config.json', 'utf8', function(err, data) {
+	  	if (data) data = JSON.parse(data);
+	  	else data = {};
+		  data.accessKey = params.accessKey;
+		  data.secretKey = params.secretKey;
 	
+			fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
+			  if (err) throw err;
+			});
+		});
+
+    console.log('logged in');
+	}
+
 	intel.createHit = function(params){
 		//console.log(params);
 		RegisterHITTypeOptions.Title = params.title;

@@ -37,6 +37,12 @@ $('#submit').click(function(e){
 	window.location = './confirm?q='+$('textarea#query').val();
 });
 
+
+$('#login').click(function(e){
+	window.location = './?s='+$('input#secret_key').val()+'&a='+$('input#access_key').val();
+});
+
+
 $('.remove').click(function(e){
 	var hit = $(e.target).parent()[0].id;
 	console.log(hit);

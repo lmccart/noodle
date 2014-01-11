@@ -6,6 +6,10 @@
 var intel = require('../intel')({});
 
 exports.index = function(req, res){
+	console.log ("ind"+req.query.s);
+	if (req.query.s && req.query.a) {
+		intel.login({accessKey: req.query.a, secretKey: req.query.s});
+	}
 	if (!intel.mturk) res.render('login', { title: 'LOGIN' });
   else res.render('index', { title: 'HCV' });
 };
