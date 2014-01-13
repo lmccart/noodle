@@ -3,36 +3,36 @@
  * GET home page.
  */
 
-var intel = require('../intel')({});
+var system = require('../system')({});
 
 exports.index = function(req, res){
 	console.log ("ind"+req.query.s);
 	if (req.query.s && req.query.a) {
-		intel.login({accessKey: req.query.a, secretKey: req.query.s});
+		system.login({accessKey: req.query.a, secretKey: req.query.s});
 	}
-	if (!intel.mturk) res.render('login', { title: 'LOGIN' });
+	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
   else res.render('index', { title: 'HCV' });
 };
 
 exports.confirm = function(req, res){
-	if (!intel.mturk) res.render('login', { title: 'LOGIN' });
+	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
 	else {
-		intel.createHit( {'title':req.query.q} );
+		system.addTask({'title':req.query.q});
 	  res.render('confirm', { query: req.query.q });
 	}
 };
 
 exports.remove = function(req, res){
-	if (!intel.mturk) res.render('login', { title: 'LOGIN' });
+	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
 	else {
-		intel.removeHit( {'HITId':req.query.hit} );
-  	res.render('manage', { tasks: intel.tasks });
+		system.removeTask(req.query.hit)
+  	res.render('manage', { tasks: system.getTasks() }); //pend
   }
 };
 
 exports.manage = function(req, res){
-	if (!intel.mturk) res.render('login', { title: 'LOGIN' });
-  else res.render('manage', { tasks: intel.tasks });
+	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
+  else res.render('manage', { tasks: system.getTasks() }); //pend
 };
 
 exports.login = function(req, res){

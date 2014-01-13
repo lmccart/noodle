@@ -1,5 +1,5 @@
 
-module.exports = function(settings) {
+module.exports = function(params) {
 
 	var fs = require('fs')
 			, util = require("util")
@@ -8,7 +8,7 @@ module.exports = function(settings) {
 	var intel = {};
 	intel.mturk = null;
 	intel.checkInterval = null;
-
+	
 	// attempt login from config file
 	fs.readFile('./data/config.json', 'utf8', function(err, data) {
 	  if (data) data = JSON.parse(data);
