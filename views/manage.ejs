@@ -34,9 +34,11 @@
       <div class="starter-template">
 		    <h1>MANAGE</h1>
 
-        <% tasks.forEach(function(el, index) { %>
-          <div class="task" id=<%= el %>>
-            <%= el %><br>
+        <% tasks.forEach(function(t, index) { %>
+          <div class="task" id=<%= t.id %>>
+            id: <%= t.id %><br>
+            status: <%= t.status %><br>
+            created: <%= t.date %><br>
             <div class='remove button'>remove</div>
           </div>
           

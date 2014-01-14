@@ -1,3 +1,27 @@
+/*
+
+TASK (format)
+
+date - date
+status - int
+trigger - 
+query - obj
+	input - 
+	question - string
+action - 
+
+
+
+
+STATUS
+
+0 - set
+1 - triggered
+2 - queried
+3 - responded
+
+*/
+
 
 module.exports = function(settings) {
 
@@ -10,8 +34,10 @@ module.exports = function(settings) {
 		return (scheduler.intel.mturk) ?  true : false;
 	};
 
-	system.addTask = function(params) {
-		scheduler.addTask(params);
+	system.addTask = function(task) {
+		task.date = new Date();
+		task.status = 0;
+		scheduler.addTask(task);
 	};
 
 	system.removeTask = function(id) {
