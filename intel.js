@@ -8,7 +8,7 @@ module.exports = function(params) {
 	var intel = {};
 	intel.mturk = null;
 	intel.checkInterval = null;
-	
+
 	// attempt login from config file
 	fs.readFile('./data/config.json', 'utf8', function(err, data) {
 	  if (data) data = JSON.parse(data);
@@ -18,17 +18,6 @@ module.exports = function(params) {
 	});
 
 
-	intel.tasks = [];
-
-	// load stored tasks
-	fs.readFile('./data/tasks.txt', 'utf8', function(error, data) {
-	  var lines = data.match(/[^\r\n]+/g);
-	  if (lines) {
-	  	lines.forEach(function(line){
-	  		intel.tasks.push(line); 
-	  	});
-	  }
-	});
 
 	var RegisterHITTypeOptions = { 
 	  Title: "Mturk Nodejs module RegisterHITType test"
@@ -58,7 +47,8 @@ module.exports = function(params) {
     console.log('logged in');
 	}
 
-	intel.createHit = function(params){
+	intel.createHit = function(params, func){
+		    console.log('create hit '+params.title);
 		//console.log(params);
 		RegisterHITTypeOptions.Title = params.title;
 
@@ -76,18 +66,15 @@ module.exports = function(params) {
 		      , 'LifetimeInSeconds': 60 * 20  // How long should the assignment last?
 		      , 'MaxAssignments': 1
 		    };
+		    console.log('register '+HITTypeId);
 
 		    // Step 2: Now create the HIT itself.
 		    intel.mturk.CreateHIT(CreateHITOptions, function(err, HITId){
 		      if (err) throw err;
 		      console.log("Created HIT "+HITId);
-		      intel.tasks.push(HITId);
 
-		      // sync storage
-					fs.writeFile('./data/tasks.txt', intel.tasks.join('\n'), function (err) {
-					  if (err) throw err;
-					});
-
+		      // callback
+		      func(HITId);
 		    }); 
 		  });
 		});
@@ -96,22 +83,10 @@ module.exports = function(params) {
 
 	intel.removeHit = function(params){
 
-		var index = intel.tasks.indexOf(params.HITId);
-		if (index > -1) {
-		    intel.tasks.splice(index, 1);
-
-				// sync storage    
-				fs.writeFile('./data/tasks.txt', intel.tasks.join('\n'), function (err) {
-				  if (err) throw err;
-				});
-		}
-
 		intel.mturk.DisableHIT(params, function(err, HITId) {
 			if (err) console.log(err);
 			console.log("disabled hit "+HITId);
 		});
-
-
 
 	}
 

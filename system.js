@@ -1,28 +1,29 @@
 
 module.exports = function(settings) {
 
-	var system = {};
 	var scheduler = require('./scheduler')({});
-	var intel = require('./intel')({});
+
+	var system = {};
+
 
 	system.isLoggedIn = function() {
-		return (intel.mturk) ?  true : false;
+		return (scheduler.intel.mturk) ?  true : false;
 	};
 
 	system.addTask = function(params) {
-		intel.createHit( params );
+		scheduler.addTask(params);
 	};
 
 	system.removeTask = function(id) {
-		intel.removeHit( {'HITId':id} );
+		scheduler.removeTask(id);
 	};
 
 	system.getTasks = function() {
-		return intel.tasks;
-	}; // PEND
+		return scheduler.tasks;
+	};
 
 	system.login = function(params) {
-		intel.login(params);
+		scheduler.intel.login(params);
 	}; //PEND
 
 	return system;
