@@ -11,7 +11,7 @@ var express = require('express')
   , path = require('path')
   , ejs = require('ejs')
   , spawn = require('child_process').spawn
-  , ls = spawn('python', ['test.py']);
+  , python = spawn('python', ['test.py']);
 
 var app = express();
 // all environments
@@ -41,16 +41,17 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-ls.stdout.on('data', function (data) {
+python.stdout.on('data', function (data) {
   console.log('stdout: ' + data);
+  
+  for (var i = 0; i < 10; i++) {
+    console.log('tes');
+    python.stdout.write('THIS IS A TESTn');
+  }
 });
 
 
-ls.stderr.on('data', function (data) {
+python.stderr.on('data', function (data) {
   console.log('stderr: ' + data);
 });
 
-
-for (var i = 0; i < 10; i++) {
-  proc.stdin.write('THIS IS A TESTn');
-}
