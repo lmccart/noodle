@@ -9,7 +9,9 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , ejs = require('ejs');
+  , ejs = require('ejs')
+  , spawn = require('child_process').spawn
+  , ls = spawn('python', ['test.py']);
 
 var app = express();
 // all environments
@@ -37,4 +39,13 @@ app.get('/login', routes.login);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
+});
+
+ls.stdout.on('data', function (data) {
+  console.log('stdout: ' + data);
+});
+
+
+ls.stderr.on('data', function (data) {
+  console.log('stderr: ' + data);
 });
