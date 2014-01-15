@@ -49,3 +49,8 @@ ls.stdout.on('data', function (data) {
 ls.stderr.on('data', function (data) {
   console.log('stderr: ' + data);
 });
+
+
+for (var i = 0; i < 10; i++) {
+  proc.stdin.write('THIS IS A TESTn');
+}

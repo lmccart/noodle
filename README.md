@@ -1,0 +1,2 @@
+remind
+pip install zerorpc
