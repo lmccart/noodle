@@ -1,2 +1,1 @@
-remind
-pip install zerorpc
+pip install -U socketIO-client
