@@ -8,14 +8,14 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 socketIO = SocketIO('localhost', 3000)
-socketIO.on('news', on_aaa_response)
-socketIO.emit('aaa', {'xxx': 'yyy'})
+socketIO.on('hi', on_aaa_response)
 socketIO.wait(seconds=1)
 
 def on_aaa_response(*args):
-    print 'on_aaa_response', args
+  socketIO.emit('aaa', {'xxx': 'yyy'})
+  #print 'on_aaa_response', args
 
-    
+
 # with SocketIO('localhost', 3000) as socketIO:
 #     socketIO.emit('aaa', {'xxx': 'yyy'})
 #     socketIO.wait(seconds=5)

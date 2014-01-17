@@ -7,13 +7,14 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
-  , http = require('http')
   , path = require('path')
   , ejs = require('ejs')
   , spawn = require('child_process').spawn
-  , python = spawn('python', ['test.py']);
+  , python = spawn('python', ['test.py'])
+  , app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server);
 
-var app = express();
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -37,15 +38,13 @@ app.get('/manage', routes.manage);
 app.get('/login', routes.login);
 //app.get('/users', user.list);
 
-var server = http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-var io = require('socket.io').listen(server);
-
 io.sockets.on('connection', function (socket) {
   console.log("connect"+socket);
-  socket.emit('news', { hello: 'world' });
+  socket.emit('hi', { hello: 'world' });
   socket.on('aaa', function (data) {
     console.log(data);
   });
