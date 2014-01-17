@@ -8,12 +8,21 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 socketIO = SocketIO('localhost', 3000)
-socketIO.on('hi', on_aaa_response)
-socketIO.wait(seconds=1)
 
 def on_aaa_response(*args):
-  socketIO.emit('aaa', {'xxx': 'yyy'})
-  #print 'on_aaa_response', args
+    print 'CALLING RESPONSE METHOD!!!!! on_aaa_response HI', args
+    socketIO.emit('test', {'xxx': 'yyy'})
+    socketIO.wait(seconds=1)
+
+
+socketIO.on("aaa_response", on_aaa_response)
+socketIO.emit('aaa', {'begin':'yes'})
+socketIO.wait(seconds=1)
+
+while 1:
+  continue
+#socketIO.emit('aaa', {'begin':'yes'})
+#socketIO.wait(seconds=10)
 
 
 # with SocketIO('localhost', 3000) as socketIO:
