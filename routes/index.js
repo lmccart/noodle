@@ -3,38 +3,44 @@
  * GET home page.
  */
 
-var system = require('../system')({});
+module.exports = function(app) {
 
-exports.index = function(req, res){
-	console.log ("ind"+req.query.s);
-	if (req.query.s && req.query.a) {
-		system.login({accessKey: req.query.a, secretKey: req.query.s});
-	}
-	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
-  else res.render('index', { title: 'HCV' });
-};
+	var routes = {};
 
-exports.confirm = function(req, res){
-	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
-	else {
-		system.addTask({'title':req.query.q});
-	  res.render('confirm', { query: req.query.q });
-	}
-};
 
-exports.remove = function(req, res){
-	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
-	else {
-		system.removeTask(req.query.hit)
-  	res.render('manage', { tasks: system.getTasks() }); //pend
-  }
-};
+	routes.index = function(req, res){
+		console.log ("ind"+req.query.s);
+		if (req.query.s && req.query.a) {
+			app.login({accessKey: req.query.a, secretKey: req.query.s});
+		}
+		if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
+	  else res.render('index', { title: 'HCV' });
+	};
 
-exports.manage = function(req, res){
-	if (!system.isLoggedIn()) res.render('login', { title: 'LOGIN' });
-  else res.render('manage', { tasks: system.getTasks() }); //pend
-};
+	routes.confirm = function(req, res){
+		if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
+		else {
+			app.addTask({'title':req.query.q});
+		  res.render('confirm', { query: req.query.q });
+		}
+	};
 
-exports.login = function(req, res){
-  res.render('login', { title: 'LOGIN' });
+	routes.remove = function(req, res){
+		if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
+		else {
+			app.removeTask(req.query.hit)
+	  	res.render('manage', { tasks: app.getTasks() }); //pend
+	  }
+	};
+
+	routes.manage = function(req, res){
+		if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
+	  else res.render('manage', { tasks: app.getTasks() }); //pend
+	};
+
+	routes.login = function(req, res){
+	  res.render('login', { title: 'LOGIN' });
+	};
+
+	return routes;
 };

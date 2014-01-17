@@ -131,3 +131,30 @@ module.exports = function(params) {
 
 	return intel;
 };
+
+
+
+/*
+
+TASK (format)
+
+date - date
+status - int
+trigger - 
+query - obj
+	input - 
+	question - string
+action - 
+
+
+
+
+STATUS
+
+0 - set
+1 - triggered
+2 - queried
+3 - responded
+
+*/
+

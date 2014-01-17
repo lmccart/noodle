@@ -5,13 +5,12 @@
 
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
   , path = require('path')
   , ejs = require('ejs')
   , spawn = require('child_process').spawn
   , python = spawn('python', ['test.py'])
   , app = express()
+  , routes = require('./routes')(app)
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
 
@@ -36,7 +35,6 @@ app.get('/confirm', routes.confirm);
 app.get('/remove', routes.remove);
 app.get('/manage', routes.manage);
 app.get('/login', routes.login);
-//app.get('/users', user.list);
 
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
@@ -56,4 +54,27 @@ io.sockets.on('connection', function (socket) {
 });
 
 
+var scheduler = require('./scheduler')({});
+
+app.isLoggedIn = function() {
+  return (scheduler.intel.mturk) ?  true : false;
+};
+
+app.addTask = function(task) {
+  task.date = new Date();
+  task.status = 0;
+  scheduler.addTask(task);
+};
+
+app.removeTask = function(id) {
+  scheduler.removeTask(id);
+};
+
+app.getTasks = function() {
+  return scheduler.tasks;
+};
+
+app.login = function(params) {
+  scheduler.intel.login(params);
+}; //PEND
 
