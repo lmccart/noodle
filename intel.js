@@ -95,7 +95,7 @@ module.exports = function(params) {
 			if (result) {
 	      var hits = (result.HIT instanceof Array) ? result.HIT : [result.HIT];
 	      hits.forEach(function(HIT){
-	      	console.log(HIT);
+	      	//console.log(HIT);
 	        // For each reviewable HIT, get the assignments that have been submitted
 	        intel.mturk.GetAssignmentsForHIT({ "HITId": HIT.HITId }, function(err, result){
 	          var assignments = (result.Assignment instanceof Array) ? result.Assignment : [result.Assignment];

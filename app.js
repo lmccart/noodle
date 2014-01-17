@@ -37,21 +37,19 @@ app.get('/manage', routes.manage);
 app.get('/login', routes.login);
 //app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-python.stdout.on('data', function (data) {
-  console.log('stdout: ' + data);
-  
-  for (var i = 0; i < 10; i++) {
-    console.log('tes');
-    python.stdout.write('THIS IS A TESTn');
-  }
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+  console.log("connect"+socket);
+  socket.emit('news', { hello: 'world' });
+  socket.on('aaa', function (data) {
+    console.log(data);
+  });
 });
 
 
-python.stderr.on('data', function (data) {
-  console.log('stderr: ' + data);
-});
 

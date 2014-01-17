@@ -17,6 +17,7 @@
     "querystring": "~0.2.0",
     "async": "~0.2.9",
     "xml2js": "~0.4.1",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "socket.io": "~0.9.16"
   }
 }
