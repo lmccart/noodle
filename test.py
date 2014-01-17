@@ -21,7 +21,7 @@ socketIO.wait(seconds=1)
 
 
 
-INITIAL_TAP_THRESHOLD = 0.010
+INITIAL_TAP_THRESHOLD = 0.025
 FORMAT = pyaudio.paInt16 
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -100,6 +100,8 @@ class TapTester(object):
 
     def tapDetected(self):
         print "Tap!"
+        socketIO.emit('event', {'mode':'audio', 'type':'tap'})
+        socketIO.wait(seconds=1)
 
     def listen(self):
         try:

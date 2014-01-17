@@ -12,7 +12,9 @@ var express = require('express')
   , app = express()
   , routes = require('./routes')(app)
   , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server);
+  , io = require('socket.io').listen(server)
+  , scheduler = require('./scheduler')({});
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -51,18 +53,27 @@ io.sockets.on('connection', function (socket) {
   socket.on('test', function (data) {
     console.log('test node received: '+data);
   });
+
+
+
+
+  socket.on('event', function (data) {
+    //console.log('event received: ', data);
+    scheduler.handleEvent(data);
+  });
+
 });
 
-
-var scheduler = require('./scheduler')({});
 
 app.isLoggedIn = function() {
   return (scheduler.intel.mturk) ?  true : false;
 };
 
 app.addTask = function(task) {
+  task.id = new Date().getTime();
   task.date = new Date();
   task.status = 0;
+  task.trigger = "noise";
   scheduler.addTask(task);
 };
 
