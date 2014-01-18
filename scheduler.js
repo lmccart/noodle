@@ -8,8 +8,8 @@ module.exports = function(settings) {
 
 
   var scheduler = {};
-  scheduler.intel = require('./intel')({});
   scheduler.tasks = [];
+  scheduler.intel = require('./intel')({tasks:scheduler.tasks});
 
     // load stored tasks
   fs.readFile('./data/tasks.json', 'utf8', function(error, data) {
@@ -32,11 +32,16 @@ module.exports = function(settings) {
 
   scheduler.removeTask = function(id) {
 
-    if (status > 0) scheduler.intel.removeHit( {'HITId':id} );
-
-    scheduler.tasks = _.filter(scheduler.tasks, function(t){ 
-      return t.id !== id; 
+    // remove hits as necessary
+    var task = _.find(scheduler.tasks, function(t) {
+      return t.id == id;
     });
+
+    if (task) {
+      if (task.status > 0) scheduler.intel.removeHit( {'HITId':id} );
+    }
+
+    scheduler.tasks = _.without(scheduler.tasks, task);
 
     // sync storage    
     fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
@@ -45,7 +50,24 @@ module.exports = function(settings) {
   };
 
 
-  scheduler.checkTriggered = function() {
+  scheduler.update = function() {
+
+    if (scheduler.intel.mturk) {
+      scheduler.intel.checkForHits(scheduler.tasks);
+    }
+
+    var responded = _.filter(scheduler.tasks, function(t){ return t.status === 2 });
+    _.each(responded, function(elt) {
+
+      // execute action
+    });
+
+    scheduler.tasks = _.filter(scheduler.tasks, function(t){ return t.status !== 2 });
+
+    // sync storage    
+    fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
+      if (err) throw err;
+    });
 
   };
 
@@ -68,8 +90,9 @@ module.exports = function(settings) {
   };
 
 
-  //scheduler.checkInterval = setInterval(scheduler.checkTriggered, 500);
-  scheduler.checkTriggered();
+  //scheduler.checkInterval = setInterval(scheduler.update, 500);
+  scheduler.update();
+
 
   return scheduler;
 };

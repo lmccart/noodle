@@ -70,7 +70,7 @@ app.isLoggedIn = function() {
 };
 
 app.addTask = function(task) {
-  task.id = new Date().getTime();
+  task.id = new Date().getTime().toString();
   task.date = new Date();
   task.status = 0;
   task.trigger = "noise";

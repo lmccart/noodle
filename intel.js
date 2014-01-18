@@ -18,7 +18,6 @@ module.exports = function(params) {
   });
 
 
-
   var RegisterHITTypeOptions = { 
     Title: "Mturk Nodejs module RegisterHITType test"
     , Keywords: "keyword1, keyword2, keyword3" 
@@ -31,7 +30,6 @@ module.exports = function(params) {
 
   intel.login = function(params) {
     intel.mturk =  require('./mturk')({creds: params, sandbox: false});
-    intel.checkInterval = setInterval(intel.checkForHits, 5000);
 
     fs.readFile('./data/config.json', 'utf8', function(err, data) {
       if (data) data = JSON.parse(data);
@@ -48,7 +46,7 @@ module.exports = function(params) {
   }
 
   intel.createHit = function(params, func){
-        console.log('create hit '+params.title);
+    console.log('create hit '+params.title);
     //console.log(params);
     RegisterHITTypeOptions.Title = params.title;
 
@@ -90,7 +88,7 @@ module.exports = function(params) {
 
   }
 
-  intel.checkForHits = function() {
+  intel.checkForHits = function(tasks) {
     intel.mturk.GetReviewableHITs({}, function(err, result){
       if (result) {
         var hits = (result.HIT instanceof Array) ? result.HIT : [result.HIT];
@@ -110,9 +108,9 @@ module.exports = function(params) {
                   parseString(assignment.Answer, function (err, result) {
                       var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
                       console.dir(answer);
-
-                      // act on the result
-                      intel.actOnResponse({"hit": HIT.HITId, "response": answer});
+                      var task = _.find(tasks, function(t) { return t.id == HIT.HITId; });
+                      // update status to responded
+                      if (task) task.status = 2;
 
                   });
                 }
@@ -123,10 +121,6 @@ module.exports = function(params) {
         });
       }
     });
-  };
-
-  intel.actOnResponse = function(resp) {
-    console.log(resp);
   };
 
   return intel;
@@ -153,8 +147,7 @@ STATUS
 
 0 - set
 1 - triggered
-2 - queried
-3 - responded
+2 - responded
 
 */
 
