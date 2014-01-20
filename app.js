@@ -7,8 +7,8 @@
 var express = require('express')
   , path = require('path')
   , ejs = require('ejs')
-  , spawn = require('child_process').spawn
-  , python = spawn('python', ['test.py'])
+  //, spawn = require('child_process').spawn
+  //, python = spawn('python', ['test.py'])
   , app = express()
   , routes = require('./routes')(app)
   , server = require('http').createServer(app)
