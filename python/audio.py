@@ -41,6 +41,9 @@ def get_rms( block ):
 
 class Audio(object):
   def __init__(self):
+    self.running = False;
+    self.registered_events = [];
+
     self.pa = pyaudio.PyAudio()
     self.stream = self.open_mic_stream()
     self.tap_threshold = INITIAL_TAP_THRESHOLD
@@ -48,7 +51,16 @@ class Audio(object):
     self.quietcount = 0 
     self.errorcount = 0
 
+
+
+  def register(self, event):
+    return;
+
+  def start(self):
+    self.running = True;
+
   def stop(self):
+    self.running = False;
     self.stream.close()
 
   def find_input_device(self):
