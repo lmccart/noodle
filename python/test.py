@@ -2,6 +2,7 @@ from socketIO_client import SocketIO
 import logging
 
 import audio
+import http
 
 #logging.basicConfig(level=logging.DEBUG)
 
@@ -20,6 +21,8 @@ socketIO.wait(seconds=1)
 
 if __name__ == "__main__":
   tt = audio.Audio()
+  ht = http.Http()
   print 'main'
   while 1:
-    tt.listen()
+    #tt.listen()
+   	#ht.ping('http://lauren-mccarthy.com/private/bird.php')

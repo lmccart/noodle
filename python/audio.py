@@ -2,7 +2,6 @@ import pyaudio
 import struct
 import math
 
-import modal
 
 INITIAL_TAP_THRESHOLD = 0.025
 FORMAT = pyaudio.paInt16 
@@ -40,9 +39,8 @@ def get_rms( block ):
 
   return math.sqrt( sum_squares / count )
 
-class Audio(modal.Modal):
-  def __init__(self, *args, **kwargs):
-    super(Audio, self).__init__(*args, **kwargs)
+class Audio(object):
+  def __init__(self):
     self.pa = pyaudio.PyAudio()
     self.stream = self.open_mic_stream()
     self.tap_threshold = INITIAL_TAP_THRESHOLD
