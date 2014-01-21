@@ -37,11 +37,19 @@ def on_deregister(*args):
     if e in modals[m].registered_events:
       modals[m].deregister(e)  
 
+def on_fire(*args):
+  m = args[0]['modal']
+  e = args[0]['event']
+  a = args[0]['args']
+  if m in modals.keys():
+    modals[m].fire(e, a)  
+
 
 socketIO.on("start", on_start)
 socketIO.on("stop", on_stop)
 socketIO.on("register", on_register)
 socketIO.on("deregister", on_deregister)
+socketIO.on("fire", on_fire)
 
 
 socketIO.emit('aaa', {'begin':'yes'})
@@ -52,5 +60,5 @@ if __name__ == "__main__":
   print 'main'
   while 1:
     #time.sleep(0.1)
-    #modals['tt'].listen()
-    modals['ht'].fire('ping', 'http://lauren-mccarthy.com/private/bird.php')
+    modals['tt'].listen()
+    #modals['ht'].fire('ping', 'http://lauren-mccarthy.com/private/bird.php')

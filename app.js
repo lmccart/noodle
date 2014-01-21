@@ -46,6 +46,12 @@ io.sockets.on('connection', function (socket) {
   console.log("connect"+socket);
   
   socket.emit('start', { modal: 'ht' });
+  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
   
   /*socket.on('aaa', function (data) {
     console.log('node received: '+data);
