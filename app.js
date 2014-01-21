@@ -7,6 +7,7 @@
 var express = require('express')
   , path = require('path')
   , ejs = require('ejs')
+  , fs = require('fs')
   //, spawn = require('child_process').spawn
   //, python = spawn('python', ['test.py'])
   , app = express()
@@ -37,6 +38,9 @@ app.get('/confirm', routes.confirm);
 app.get('/remove', routes.remove);
 app.get('/manage', routes.manage);
 app.get('/login', routes.login);
+
+app.post('/upload', routes.upload);
+app.get('/uploads/:file', routes.uploads);
 
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
