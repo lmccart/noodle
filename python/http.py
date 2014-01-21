@@ -5,6 +5,7 @@ class Http(object):
     self.running = False;
 
   def start(self):
+    print "STARTING HTTP"
     self.running = True;
 
   def stop(self):

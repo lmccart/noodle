@@ -44,15 +44,17 @@ server.listen(app.get('port'), function(){
 
 io.sockets.on('connection', function (socket) {
   console.log("connect"+socket);
-  socket.emit('aaa_response', { hello: 'world' });
-  socket.on('aaa', function (data) {
+  
+  socket.emit('start', { modal: 'ht' });
+  
+  /*socket.on('aaa', function (data) {
     console.log('node received: '+data);
     socket.emit('aaa_response', { hello: 'world' });
   });
 
   socket.on('test', function (data) {
     console.log('test node received: '+data);
-  });
+  });*/
 
 
 
