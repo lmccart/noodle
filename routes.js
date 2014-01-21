@@ -57,13 +57,13 @@ module.exports = function(app) {
 
       } else {
 
-        var newPath = "../"+__dirname + "/uploads/" + imageName;
+        var newPath = __dirname + "/uploads/" + imageName;
 
         /// write file to uploads/fullsize folder
         fs.writeFile(newPath, data, function (err) {
 
           /// let's see it
-          res.redirect("../uploads/" + imageName);
+          res.redirect("/uploads/" + imageName);
 
         });
       }
@@ -72,7 +72,7 @@ module.exports = function(app) {
 
   routes.uploads = function(req, res) {
     file = req.params.file;
-    var img = fs.readFileSync("../"+__dirname + "/uploads/" + file);
+    var img = fs.readFileSync(__dirname + "/uploads/" + file);
     res.writeHead(200, {'Content-Type': 'image/jpg' });
     res.end(img, 'binary');
   };
