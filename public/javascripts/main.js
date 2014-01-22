@@ -74,8 +74,14 @@ function startQuery() {
   $('#query-selection').show();
 
   $('#query-selection select').change(function(){
-    task.question = ($(this).val());
+    task.query = ($(this).val());    
+    $('#action-selection').show();
+    $('#action-selection').html('');
     if ($(this).val() === 'mc') $('#query-selection .submodule').show();
+    else {
+      $('#query-selection .submodule').hide()
+      updateActions();
+    }
     console.log(task);
   });
 
@@ -86,12 +92,22 @@ function startQuery() {
 }
 
 function updateActions() {
-  $('#action-selection').show();
-  $('#action-selection').html('');
-  $('#query-selection input').each(function(e) {
-    if ($(this).val() != '') {
-      var new_id = 'action_'+$(this).val();
-      $('#action-selection').append('<br>If the human answers '+$(this).val()+': <span id="'+new_id+'"></span>');
+  var choices = [];
+  if (task.query === 'mc') {
+    $('#query-selection input').each(function(e) {
+      choices.push($(this).val());
+    });
+  } else if (task.query === 'tf') {
+    choices = ['true', 'false'];
+  } else if (task.query === 'sa') {
+    choices = ['anything'];
+  }
+  console.log(choices);
+
+  _.each(choices, function(c) {
+    if (c != '') {
+      var new_id = 'action_'+c;
+      $('#action-selection').append('<br>If the human answers '+c+': <span id="'+new_id+'"></span>');
       createDrop($('#'+new_id), actions, null);
     }
   });
