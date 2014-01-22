@@ -37,6 +37,28 @@
 
 		    <div class="module" id="trigger-selection">
           When the <span id="triggers"></span>
+        </div>
+
+        <div class="module" id="query-selection">
+          Ask a human the
+          <select>
+            <option value=""></option>
+            <option value="sa">short answer</option>
+            <option value="tf">true false</option>
+            <option value="mc">multiple choice</option>
+          </select>
+          question:
+          <textarea id="query" cols="40" rows="5" name="query"></textarea>
+          <span class="submodule">with choices 
+          <input type="text" id="choices_0"/>, 
+          <input type="text" id="choices_1"/>,
+          <input type="text" id="choices_2"/>
+          </span>
+        </div>
+
+        <div class="module" id="action-selection">
+
+        </div>
 <!-- 
 		    	<div class="submodule category">
 			    	<h2>Select the desired trigger category</h2>
@@ -76,8 +98,6 @@
         </form> -->
 
 
-
-      </div>
 
     </div><!-- /.container -->
 

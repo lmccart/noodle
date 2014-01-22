@@ -11,15 +11,31 @@ var triggers = {
   }
 };
 
-var query = [];
+var task = {
+  trigger: [],
+  query: []
+};
+
+var actions = {
+  microphone: {
+    noise: ['is louder than', 'is quieter than']
+  },
+  camera: {
+    movement: ['is bigger than', 'makes more sense than'],
+    faces: ['is bigger than', 'makes more sense than']
+  },
+  clock: {
+    time: ['is later than', 'is better than']
+  }
+};
 
 
 window.onload=function(){
-  createDrop($('#triggers'), triggers);
+  createDrop($('#triggers'), triggers, startQuery);
   $('#trigger-selection').show();
 };
 
-function createDrop(elt, obj) {
+function createDrop(elt, obj, cb) {
   var is_arr = (Object.prototype.toString.call( obj ) === '[object Array]');
 
   var keys = [];
@@ -34,27 +50,52 @@ function createDrop(elt, obj) {
     insert += '<option value="'+keys[i]+'">'+keys[i]+'</option>';
   }
   insert += '</select>';
-  console.log(elt);
   elt.html(insert);
   $('#'+elt.attr('id')+' select').change(function(){
-    query.push($(this).val());
+    task.trigger.push($(this).val());
     var new_id = elt.attr('id') + '_';
     if (is_arr) {
       elt.parent().append('<input type="text" name="hi" id="'+new_id+'"/>');
       $('#'+new_id).change(function() {     
-        query.push($(this).val()); 
-        console.log("DONE!");
-        console.log(query);
+        task.trigger.push($(this).val()); 
+        console.log(task);
+        cb();
       });
     } else {
       elt.parent().append('<span id="'+new_id+'"></span>');
-      elt.parent().append(createDrop($('#'+new_id), obj[$(this).val()]));
+      elt.parent().append(createDrop($('#'+new_id), obj[$(this).val()], cb));
     }
   });
   
 }
 
 
+function startQuery() {
+  $('#query-selection').show();
+
+  $('#query-selection select').change(function(){
+    task.question = ($(this).val());
+    if ($(this).val() === 'mc') $('#query-selection .submodule').show();
+    console.log(task);
+  });
+
+  $('#query-selection input').change(function() {
+    updateActions();
+  });
+
+}
+
+function updateActions() {
+  $('#action-selection').show();
+  $('#action-selection').html('');
+  $('#query-selection input').each(function(e) {
+    if ($(this).val() != '') {
+      var new_id = 'action_'+$(this).val();
+      $('#action-selection').append('<br>If the human answers '+$(this).val()+': <span id="'+new_id+'"></span>');
+      createDrop($('#'+new_id), actions, null);
+    }
+  });
+}
 
 
 
