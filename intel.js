@@ -109,9 +109,11 @@ module.exports = function(params) {
                       var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
                       console.dir(answer);
                       var task = _.find(tasks, function(t) { return t.id == HIT.HITId; });
-                      // update status to responded
-                      if (task) task.status = 2;
-
+                      
+                      if (task) {
+                        task.status = 2; // update status to responded
+                        task.query.answer = answer;
+                      }
                   });
                 }
               }

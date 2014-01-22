@@ -30,11 +30,6 @@ module.exports = function(server) {
       console.log('test node received: '+data);
     });*/
 
-
-    setInterval(function() { 
-    socket.emit('register', { modal: 'clock', event: 'time' }); }, 1000);
-
-
     socket.on('event', function (data) {
       //console.log('event received: ', data);
       handleEvent(data);
@@ -60,7 +55,7 @@ module.exports = function(server) {
   scheduler.addTask = function(task) {
     scheduler.tasks.push(task);
     // register task with python
-    socket.emit('register', { modal: task.trigger[0], event: 'time' });
+    socket.emit('register', { modal: task.trigger[0], event: task.trigger.slice(1) });
 
     // sync storage
     fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
@@ -100,8 +95,11 @@ module.exports = function(server) {
     _.each(responded, function(elt) {
 
       // execute action
+      var a = (task.actions.length === 1) ? task.actions[0] : task.actions[task.query.answer];
+      socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1)});
     });
 
+    // remove finished tasks
     scheduler.tasks = _.filter(scheduler.tasks, function(t){ return t.status !== 2 });
 
     // sync storage    

@@ -59,18 +59,10 @@ class Monitor(threading.Thread):
 
   def run(self):
     while 1: 
-      print 'still alive'
+      for m in modals.keys():
+        if len(modals[m].registered_events) == 0 and modals[m].running:
+          modals[m].stop();
       time.sleep(1);
-
-    # for m in modals.keys():
-    #   if len(modals[m].registered_events) == 0 and modals[m].running:
-    #     modals[m].stop();
-
-    #time.sleep(5.0)
-    # modals['audio'].listen()
-    #modals['ht'].fire('ping', 'http://lauren-mccarthy.com/private/bird.php')
-
-    #time.sleep(0.1)
 
 def startSocket(modals):
   socket = Socket(modals)
