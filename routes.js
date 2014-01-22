@@ -20,7 +20,8 @@ module.exports = function(app) {
   routes.add = function(req, res) {
     if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
     else {
-      console.log(req.body.trigger);
+      console.log(req.body);
+      app.addTask(req.body);
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ success: true}));
     }

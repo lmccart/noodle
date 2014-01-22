@@ -1,10 +1,47 @@
 
-module.exports = function(settings) {
+module.exports = function(server) {
 
   var fs = require('fs')
-      , util = require("util")
-      , parseString = require('xml2js').parseString
-      , _ = require('underscore');
+    , util = require("util")
+    , parseString = require('xml2js').parseString
+    , _ = require('underscore')
+    , io = require('socket.io').listen(server)
+
+  var socket;
+
+  io.sockets.on('connection', function (skt) {
+    socket = skt;
+    console.log("connect"+socket);
+    
+    socket.emit('register', { modal: 'clock', event: 'time' });
+    // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+    // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+    // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+    // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+    // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+    // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
+    
+    /*socket.on('aaa', function (data) {
+      console.log('node received: '+data);
+      socket.emit('aaa_response', { hello: 'world' });
+    });
+
+    socket.on('test', function (data) {
+      console.log('test node received: '+data);
+    });*/
+
+
+    setInterval(function() { 
+    socket.emit('register', { modal: 'clock', event: 'time' }); }, 1000);
+
+
+    socket.on('event', function (data) {
+      //console.log('event received: ', data);
+      handleEvent(data);
+    });
+
+  });
+
 
 
   var scheduler = {};
@@ -22,6 +59,8 @@ module.exports = function(settings) {
 
   scheduler.addTask = function(task) {
     scheduler.tasks.push(task);
+    // register task with python
+    socket.emit('register', { modal: task.trigger[0], event: 'time' });
 
     // sync storage
     fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
@@ -52,6 +91,7 @@ module.exports = function(settings) {
 
   scheduler.update = function() {
 
+    // check for responses
     if (scheduler.intel.mturk) {
       scheduler.intel.checkForHits(scheduler.tasks);
     }

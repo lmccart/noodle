@@ -1,6 +1,4 @@
-import urllib2
-
-class Http(object):
+class Clock(object):
   def __init__(self):
     self.running = False;
     self.registered_events = [];
@@ -10,3 +8,7 @@ class Http(object):
 
   def stop(self):
     self.running = False;
+
+  def register(self, event):
+  	print ("registered ", event)
+  	return;

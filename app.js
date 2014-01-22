@@ -13,8 +13,7 @@ var express = require('express')
   , app = express()
   , routes = require('./routes')(app)
   , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server)
-  , scheduler = require('./scheduler')({});
+  , scheduler = require('./scheduler')(server);
 
 
 // all environments
@@ -46,35 +45,6 @@ server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-io.sockets.on('connection', function (socket) {
-  console.log("connect"+socket);
-  
-  socket.emit('start', { modal: 'ht' });
-  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-  // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-  
-  /*socket.on('aaa', function (data) {
-    console.log('node received: '+data);
-    socket.emit('aaa_response', { hello: 'world' });
-  });
-
-  socket.on('test', function (data) {
-    console.log('test node received: '+data);
-  });*/
-
-
-
-
-  socket.on('event', function (data) {
-    //console.log('event received: ', data);
-    scheduler.handleEvent(data);
-  });
-
-});
 
 
 app.isLoggedIn = function() {
@@ -85,7 +55,6 @@ app.addTask = function(task) {
   task.id = new Date().getTime().toString();
   task.date = new Date();
   task.status = 0;
-  task.trigger = "noise";
   scheduler.addTask(task);
 };
 
