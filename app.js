@@ -34,7 +34,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/confirm', routes.confirm);
+app.post('/add', routes.add);
 app.get('/remove', routes.remove);
 app.get('/manage', routes.manage);
 app.get('/login', routes.login);

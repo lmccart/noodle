@@ -17,11 +17,12 @@ module.exports = function(app) {
     else res.render('index', { title: 'HCV' });
   };
 
-  routes.confirm = function(req, res) {
+  routes.add = function(req, res) {
     if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
     else {
-      app.addTask({'title':req.query.q});
-      res.render('confirm', { query: req.query.q });
+      console.log(req.body.trigger);
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ success: true}));
     }
   };
 

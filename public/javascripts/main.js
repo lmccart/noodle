@@ -141,7 +141,6 @@ function updateActions() {
 }
 
 
-
 // index page
 $('#submit').click(function(e){
   // add triggers
@@ -167,8 +166,14 @@ $('#submit').click(function(e){
     });
     task.actions.push(a);
   });
-  //window.location = './confirm?q='+$('textarea#query').val();
+
   console.log(task);
+  $.ajax({
+    url:"/add",
+    type:"POST",
+    data:task, 
+    success:function (res) { console.log(res); window.location = './manage' }
+  });
 });
 
 // login page
