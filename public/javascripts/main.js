@@ -13,7 +13,8 @@ var triggers = {
 
 var task = {
   trigger: [],
-  query: []
+  query: {},
+  actions: []
 };
 
 var actions = {
@@ -55,26 +56,47 @@ function createDrop(elt, obj, cb) {
     task.trigger.push($(this).val());
     var new_id = elt.attr('id') + '_';
     if (is_arr) {
-      elt.parent().append('<input type="text" name="hi" id="'+new_id+'"/>');
+      var mans = elt.parent().children();
+      for (var i=0; i<mans.length; i++) {
+        console.log(mans[i]);
+      }
+      eraseAllAfter(elt);
+      elt.parent().append('<input type="text" class="part" id="'+new_id+'"/>');
       $('#'+new_id).change(function() {     
         task.trigger.push($(this).val()); 
         console.log(task);
-        cb();
+        if (cb) cb();
       });
     } else {
-      elt.parent().append('<span id="'+new_id+'"></span>');
+      eraseAllAfter(elt);
+      elt.parent().append('<span class="part" id="'+new_id+'"></span>');
       elt.parent().append(createDrop($('#'+new_id), obj[$(this).val()], cb));
     }
   });
   
 }
 
+function eraseAllAfter(elt) {
+  var all = elt.parent().children();
+  console.log(all.length);
+  var found = false;
+  for (var i=0; i<all.length; i++) {
+    if (found) {
+      console.log('removing '+all[i].id);
+      $('#'+all[i].id).remove();
+    }
+    if (elt.attr('id') == all[i].id) {
+      found = true;
+      console.log("FOUND");
+    }
+  }
+}
 
 function startQuery() {
   $('#query-selection').show();
 
   $('#query-selection select').change(function(){
-    task.query = ($(this).val());    
+    task.query.type = ($(this).val());    
     $('#action-selection').show();
     $('#action-selection').html('');
     if ($(this).val() === 'mc') $('#query-selection .submodule').show();
@@ -93,13 +115,13 @@ function startQuery() {
 
 function updateActions() {
   var choices = [];
-  if (task.query === 'mc') {
+  if (task.query.type === 'mc') {
     $('#query-selection input').each(function(e) {
       choices.push($(this).val());
     });
-  } else if (task.query === 'tf') {
+  } else if (task.query.type === 'tf') {
     choices = ['true', 'false'];
-  } else if (task.query === 'sa') {
+  } else if (task.query.type === 'sa') {
     choices = ['anything'];
   }
   console.log(choices);
@@ -107,8 +129,8 @@ function updateActions() {
   _.each(choices, function(c) {
     if (c != '') {
       var new_id = 'action_'+c;
-      $('#action-selection').append('<br>If the human answers '+c+': <span id="'+new_id+'"></span>');
-      createDrop($('#'+new_id), actions, null);
+      $('#action-selection').append('<div class="action" id="'+new_id+'">If the human answers '+c+': <span class="part" id="'+new_id+'_"></span></div>');
+      createDrop($('#'+new_id+'_'), actions, null);
     }
   });
 }
@@ -118,7 +140,20 @@ function updateActions() {
 // index page
 $('#submit').click(function(e){
   console.log('hi');
-  window.location = './confirm?q='+$('textarea#query').val();
+  task.query.question = $('textarea#question').val();
+  $('#action-selection .action').each(function() {
+    console.log('action');
+    var a = [];
+    $(this).find('select').each(function() {
+      a.push($(this).val());
+    });
+    $(this).find('input').each(function() {
+      a.push($(this).val());
+    });
+    task.actions.push(a);
+  });
+  //window.location = './confirm?q='+$('textarea#query').val();
+  console.log(task);
 });
 
 // login page
