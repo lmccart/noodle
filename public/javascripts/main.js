@@ -1,3 +1,9 @@
+var task = {
+  trigger: [],
+  query: {},
+  actions: []
+};
+
 var triggers = {
   microphone: {
     noise: ['is louder than', 'is quieter than']
@@ -11,11 +17,13 @@ var triggers = {
   }
 };
 
-var task = {
-  trigger: [],
-  query: {},
-  actions: []
+var input = {
+  microphone: {
+    record: ['3s', '10s']
+  },
+  camera: ['take a photo', 'send 10s of video']
 };
+
 
 var actions = {
   microphone: {
@@ -53,7 +61,7 @@ function createDrop(elt, obj, cb) {
   insert += '</select>';
   elt.html(insert);
   $('#'+elt.attr('id')+' select').change(function(){
-    task.trigger.push($(this).val());
+    //task.trigger.push($(this).val());
     var new_id = elt.attr('id') + '_';
     if (is_arr) {
       var mans = elt.parent().children();
@@ -63,7 +71,7 @@ function createDrop(elt, obj, cb) {
       eraseAllAfter(elt);
       elt.parent().append('<input type="text" class="part" id="'+new_id+'"/>');
       $('#'+new_id).change(function() {     
-        task.trigger.push($(this).val()); 
+        //task.trigger.push($(this).val());
         console.log(task);
         if (cb) cb();
       });
@@ -78,16 +86,13 @@ function createDrop(elt, obj, cb) {
 
 function eraseAllAfter(elt) {
   var all = elt.parent().children();
-  console.log(all.length);
   var found = false;
   for (var i=0; i<all.length; i++) {
     if (found) {
-      console.log('removing '+all[i].id);
       $('#'+all[i].id).remove();
     }
     if (elt.attr('id') == all[i].id) {
       found = true;
-      console.log("FOUND");
     }
   }
 }
@@ -139,8 +144,18 @@ function updateActions() {
 
 // index page
 $('#submit').click(function(e){
-  console.log('hi');
+  // add triggers
+  $('#trigger-selection select').each(function() {
+    task.trigger.push($(this).val());
+  });
+  $('#trigger-selection input').each(function() {
+    task.trigger.push($(this).val());
+  });
+
+  // add query
   task.query.question = $('textarea#question').val();
+
+  // add actions
   $('#action-selection .action').each(function() {
     console.log('action');
     var a = [];
