@@ -34,8 +34,10 @@
       <div class="starter-template">
 		    <h1><%= title %></h1>
 
-		    <div class="module" id="trigger-selection">
 
+		    <div class="module" id="trigger-selection">
+          When the <span id="triggers"></span>
+<!-- 
 		    	<div class="submodule category">
 			    	<h2>Select the desired trigger category</h2>
 			    	<div class='options'>
@@ -71,7 +73,7 @@
         <form method='post' action='/upload' enctype='multipart/form-data'>
           <input type='file' name='image'/>
           <input type='submit' />
-        </form>
+        </form> -->
 
 
 
@@ -84,6 +86,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/javascripts/underscore.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
     <script src="/javascripts/main.js"></script>
 

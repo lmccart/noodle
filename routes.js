@@ -50,8 +50,7 @@ module.exports = function(app) {
 
       /// If there's an error
       if(!imageName){
-
-        console.log("There was an error")
+        console.log("There was an error, please try again.")
         res.redirect("/");
         res.end();
 
@@ -61,10 +60,11 @@ module.exports = function(app) {
 
         /// write file to uploads/fullsize folder
         fs.writeFile(newPath, data, function (err) {
-
-          /// let's see it
-          res.redirect("/uploads/" + imageName);
-
+          if (err) {
+            console.log("There was an error, please try again.")
+            res.redirect("/");
+            res.end();
+          } else res.redirect("uploads/" + imageName);
         });
       }
     });
