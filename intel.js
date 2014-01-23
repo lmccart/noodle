@@ -3,7 +3,8 @@ module.exports = function(params) {
 
   var fs = require('fs')
       , util = require("util")
-      , parseString = require('xml2js').parseString;
+      , parseString = require('xml2js').parseString
+      , json2xml = require('json2xml');
 
   var intel = {};
   intel.mturk = null;
@@ -16,6 +17,22 @@ module.exports = function(params) {
       intel.login(data);
     }
   });
+
+
+  // fs.readFile("./data/question_form_sa.xml", 'utf8', function(err, data) {
+  //   if (err) throw err;
+
+  //   console.log(data)
+  //   parseString(data, function (err, result) {
+  //     console.log(result);
+  //     result.QuestionForm.Question[0].QuestionContent[0].Text[0] = ["Hello hi"];
+  //     result = json2xml(result, '  ');
+      
+  //     fs.writeFile('./data/question_form_sa.xml', result, function(err, data) {
+  //       if (err) throw err;
+  //     });
+  //   });
+  // });
 
 
   var RegisterHITTypeOptions = { 
@@ -45,35 +62,46 @@ module.exports = function(params) {
     console.log('logged in');
   }
 
-  intel.createHit = function(params, func){
-    console.log('create hit '+params.title);
-    //console.log(params);
-    RegisterHITTypeOptions.Title = params.title;
+  intel.createHit = function(task, func){
+    console.log('create hit '+task);
+
+
+    RegisterHITTypeOptions.Title = 'testing';
+
 
       // Step 1: First we have to create a HITTypeId
     intel.mturk.RegisterHITType(RegisterHITTypeOptions, function(err, HITTypeId){
       if (err) throw err;
 
-      fs.readFile("./data/QuestionForm.xml", 'utf8', function(err, questionXML) {
+      fs.readFile("./data/question_form_sa.xml", 'utf8', function(err, data) {
         if (err) throw err;
 
+        parseString(data, function (err, result) {
+          console.log(result);
+          result.QuestionForm.Question[0].QuestionContent[0].Text[0] = [task.query.question];
 
-        var CreateHITOptions = {
-          'HITTypeId': HITTypeId
-          , 'Question': questionXML
-          , 'LifetimeInSeconds': 60 * 20  // How long should the assignment last?
-          , 'MaxAssignments': 1
-        };
-        console.log('register '+HITTypeId);
+          result.attr = {xmlns:"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd"};
+          result = json2xml(result, { attributes_key:'attr' });
+          
+          var CreateHITOptions = {
+            'HITTypeId': HITTypeId
+            , 'Question': result
+            , 'LifetimeInSeconds': 60 * 20  // How long should the assignment last?
+            , 'MaxAssignments': 1
+          };
+          console.log('register '+HITTypeId);
 
-        // Step 2: Now create the HIT itself.
-        intel.mturk.CreateHIT(CreateHITOptions, function(err, HITId){
-          if (err) throw err;
-          console.log("Created HIT "+HITId);
+          // Step 2: Now create the HIT itself.
+          intel.mturk.CreateHIT(CreateHITOptions, function(err, HITId){
+            if (err) throw err;
+            console.log("Created HIT "+HITId);
 
-          // callback
-          func(HITId);
-        }); 
+            // callback
+            func(HITId);
+          }); 
+        });
+
+
       });
     });
 

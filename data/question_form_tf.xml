@@ -1,0 +1,34 @@
+<QuestionForm>
+  <Overview>
+    <Title>Questions</Title>
+    <Text>
+        Please answer the question below.
+    </Text>
+  </Overview>
+
+  <Question>
+    <QuestionIdentifier>001</QuestionIdentifier>
+    <DisplayName>Question</DisplayName>
+    <IsRequired>true</IsRequired>
+    <QuestionContent>
+      <Text>How are you?</Text>
+    </QuestionContent>
+
+    <AnswerSpecification>
+      <SelectionAnswer>
+        <StyleSuggestion>radiobutton</StyleSuggestion>
+        <Selections>
+          <Selection>
+            <SelectionIdentifier>0</SelectionIdentifier>
+            <Text>Yes</Text>
+          </Selection>
+          <Selection>
+            <SelectionIdentifier>1</SelectionIdentifier>
+            <Text>No</Text>
+          </Selection>
+        </Selections>  
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+
+</QuestionForm>

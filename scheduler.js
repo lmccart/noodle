@@ -57,6 +57,11 @@ module.exports = function(server) {
     // register task with python
     socket.emit('register', { modal: task.trigger[0], event: task.trigger.slice(1) });
 
+    // pend temp testing!
+    scheduler.intel.createHit( task, function(id) {
+      task.id = id;
+    });
+
     // sync storage
     fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
       if (err) throw err;
