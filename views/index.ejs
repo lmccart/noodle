@@ -40,8 +40,15 @@
         </div>
 
         <div class="module" id="query-selection">
-          Ask a human the
-          <select>
+          First
+          <select id="input-type">
+            <option value="">no nothing</option>
+            <option value="p">take a picture</option>
+            <option value="v">record video</option>
+            <option value="a">record audio</option>
+          </select>,        
+           then ask the
+          <select id="question-type">
             <option value=""></option>
             <option value="sa">short answer</option>
             <option value="tf">true false</option>

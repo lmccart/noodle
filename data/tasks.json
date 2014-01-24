@@ -1,1 +1,1 @@
-[{"trigger":["clock","time","is better than","d"],"query":{"type":"sa","question":"What is this image?"},"actions":[["camera","movement"]],"id":"2ACHYW2GTP9RXKQEO5S6FYSQEXJNSD","date":"2014-01-24T22:30:41.576Z","status":0}]
+[{"trigger":["camera","faces","is bigger than","d"],"query":{"type":"sa","input":"p","question":"ad"},"actions":[["camera","movement","is bigger than"]],"id":"2OIG5R98D8J3IR55KBKN4CG5L29UEH","date":"2014-01-24T23:04:20.956Z","status":0}]

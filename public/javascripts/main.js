@@ -97,7 +97,7 @@ function eraseAllAfter(elt) {
 function startQuery() {
   $('#query-selection').show();
 
-  $('#query-selection select').change(function(){
+  $('#question-type').change(function(){
     task.query.type = ($(this).val());    
     $('#action-selection').show();
     $('#action-selection').html('');
@@ -200,6 +200,7 @@ $('#submit').click(function(e){
   });
 
   // add query
+  if($('#input-type').val().length > 0) task.query.input = $('#input-type').val();
   task.query.question = $('textarea#question').val();
 
   // add choices for mc
