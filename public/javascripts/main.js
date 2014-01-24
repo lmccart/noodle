@@ -154,6 +154,14 @@ $('#submit').click(function(e){
   // add query
   task.query.question = $('textarea#question').val();
 
+  // add choices for mc
+  if (task.query.type === 'mc') {
+    task.query.choices = [];
+    $('#query-selection input').each(function(e) {
+      task.query.choices.push($(this).val());
+    });
+  }
+
   // add actions
   $('#action-selection .action').each(function() {
     console.log('action');

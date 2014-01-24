@@ -77,11 +77,12 @@ module.exports = function(params) {
         if (err) throw err;
 
         parseString(data, function (err, result) {
-          console.log(result);
           result.QuestionForm.Question[0].QuestionContent[0].Text[0] = [task.query.question];
 
           if (task.query.type == 'mc') {
-
+            for (var i=0; i<task.query.choices.length; i++) {
+              result.QuestionForm.Question[0].AnswerSpecification[0].SelectionAnswer[0].Selections[i].Selection[0].Text = task.query.choices[i];
+            }
           }
 
           result.attr = {xmlns:"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd"};
