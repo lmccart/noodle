@@ -107,29 +107,23 @@ function startQuery() {
     if ($(this).val() === 'mc') $('#query-selection .submodule').show();
     else {
       $('#query-selection .submodule').hide()
-      updateActions();
     }
-    console.log(task);
+    buildActions();
   });
 
   $('#query-selection input').change(function() {
-    updateActions();
+    updateMC();
   });
 
 }
 
-function updateActions() {
+function buildActions() {
   var choices = [];
-  if (task.query.type === 'mc') {
-    $('#query-selection input').each(function(e) {
-      choices.push($(this).val());
-    });
-  } else if (task.query.type === 'tf') {
+  if (task.query.type === 'tf') {
     choices = ['true', 'false'];
   } else if (task.query.type === 'sa') {
     choices = ['anything'];
   }
-  console.log(choices);
 
   _.each(choices, function(c) {
     if (c != '') {
@@ -140,6 +134,31 @@ function updateActions() {
   });
 }
 
+function updateMC() {
+  var choices = [];
+  $('#query-selection input').each(function(e) {
+    if ($(this).val().length > 0) choices.push($(this).val());
+  });
+
+  var adivs = $('#action-selection .action');
+  
+  // clear div and refill
+  $('#action-selection').empty();
+  for (var i=0; i<choices.length; i++) {
+    var new_id = 'action_'+choices[i];
+    var found = false;
+    for (var j=0; j<adivs.length; j++) {
+      if (adivs[j].id == new_id) {
+        $('#action-selection').append(adivs[j]);
+        found = true;
+      } 
+    }
+    if (!found) {
+      $('#action-selection').append('<div class="action" id="'+new_id+'">If the human answers '+choices[i]+': <span class="part" id="'+new_id+'_"></span></div>');
+      createDrop($('#'+new_id+'_'), actions, null);
+    }
+  }
+}
 
 // index page
 $('#submit').click(function(e){

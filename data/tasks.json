@@ -1,1 +1,1 @@
-[{"trigger":["camera","movement","is bigger than","dd"],"query":{"type":"mc","question":"Do you like:","choices":["apple","banana","cake"]},"actions":[[],[],[],[],[],[]],"id":"1390524894591","date":"2014-01-24T00:54:54.591Z","status":0}]
+[{"trigger":["camera","faces","makes more sense than","dd"],"query":{"type":"mc","question":"What is your fav color?","choices":["red","blue","green"]},"actions":[["camera","movement","makes more sense than","ddd"],["camera"],["camera","faces","makes more sense than","ddd"]],"id":"1390526897603","date":"2014-01-24T01:28:17.603Z","status":0}]
