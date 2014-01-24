@@ -1,1 +1,1 @@
-[{"trigger":["camera","faces","makes more sense than","dd"],"query":{"type":"mc","question":"What is your fav color?","choices":["red","blue","green"]},"actions":[["camera","movement","makes more sense than","ddd"],["camera"],["camera","faces","makes more sense than","ddd"]],"id":"1390526897603","date":"2014-01-24T01:28:17.603Z","status":0}]
+[{"trigger":["clock","time","is later than","dd"],"query":{"type":"sa","question":"How are you?"},"actions":[["camera"]],"id":"21E4ZMAZHHRR8SO9G6EVXH1MG9ZKB1","date":"2014-01-24T01:43:48.037Z","status":0}]

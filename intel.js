@@ -4,7 +4,8 @@ module.exports = function(params) {
   var fs = require('fs')
       , util = require("util")
       , parseString = require('xml2js').parseString
-      , json2xml = require('json2xml');
+      , json2xml = require('json2xml')
+      , _ = require('underscore');
 
   var intel = {};
   intel.mturk = null;
@@ -17,23 +18,6 @@ module.exports = function(params) {
       intel.login(data);
     }
   });
-
-
-  // fs.readFile("./data/question_form_sa.xml", 'utf8', function(err, data) {
-  //   if (err) throw err;
-
-  //   console.log(data)
-  //   parseString(data, function (err, result) {
-  //     console.log(result);
-  //     result.QuestionForm.Question[0].QuestionContent[0].Text[0] = ["Hello hi"];
-  //     result = json2xml(result, '  ');
-      
-  //     fs.writeFile('./data/question_form_sa.xml', result, function(err, data) {
-  //       if (err) throw err;
-  //     });
-  //   });
-  // });
-
 
   var RegisterHITTypeOptions = { 
     Title: "Mturk Nodejs module RegisterHITType test"
@@ -129,16 +113,17 @@ module.exports = function(params) {
           //console.log(HIT);
           // For each reviewable HIT, get the assignments that have been submitted
           intel.mturk.GetAssignmentsForHIT({ "HITId": HIT.HITId }, function(err, result){
-            var assignments = (result.Assignment instanceof Array) ? result.Assignment : [result.Assignment];
-            assignments.forEach(function(assignment){
-              if (assignment) {
-                if (assignment.AssignmentStatus === "Submitted") {
+            if (result) {
+              var assignments = (result.Assignment instanceof Array) ? result.Assignment : [result.Assignment];
+              assignments.forEach(function(assignment){
+                if (assignment) {
+                  if (assignment.AssignmentStatus === "Submitted") {
 
-                  intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
-                    console.log("approved "+assignment.AssignmentId);
-                  });
+                    intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+                      console.log("approved "+assignment.AssignmentId);
+                    });
 
-                  parseString(assignment.Answer, function (err, result) {
+                    parseString(assignment.Answer, function (err, result) {
                       var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
                       console.dir(answer);
                       var task = _.find(tasks, function(t) { return t.id == HIT.HITId; });
@@ -147,10 +132,11 @@ module.exports = function(params) {
                         task.status = 2; // update status to responded
                         task.query.answer = answer;
                       }
-                  });
+                    });
+                  }
                 }
-              }
-            });
+              });
+            }
           });
           
         });

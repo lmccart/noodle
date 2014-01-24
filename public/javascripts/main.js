@@ -66,13 +66,10 @@ function createDrop(elt, obj, cb) {
     if (is_arr) {
       var mans = elt.parent().children();
       for (var i=0; i<mans.length; i++) {
-        console.log(mans[i]);
       }
       eraseAllAfter(elt);
       elt.parent().append('<input type="text" class="part" id="'+new_id+'"/>');
-      $('#'+new_id).change(function() {     
-        //task.trigger.push($(this).val());
-        console.log(task);
+      $('#'+new_id).change(function() {    
         if (cb) cb();
       });
     } else {
@@ -141,7 +138,7 @@ function updateMC() {
   });
 
   var adivs = $('#action-selection .action');
-  
+
   // clear div and refill
   $('#action-selection').empty();
   for (var i=0; i<choices.length; i++) {
@@ -183,7 +180,6 @@ $('#submit').click(function(e){
 
   // add actions
   $('#action-selection .action').each(function() {
-    console.log('action');
     var a = [];
     $(this).find('select').each(function() {
       a.push($(this).val());
