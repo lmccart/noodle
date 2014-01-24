@@ -3,6 +3,7 @@ import logging
 import time
 import sys
 import threading
+import subprocess
 
 import audio
 import http
@@ -66,6 +67,9 @@ class Monitor(threading.Thread):
 
 def startSocket(modals):
   socket = Socket(modals)
+  command = "/usr/bin/arecord -D plughw:1,0 -d 10 -f S16_LE -c1 -r11025 -t wav test.wav"
+  log.info("%s" % command)
+  subprocess.check_call(command, shell=True)    
 
 if __name__ == '__main__':
   modals = { 'audio': audio.Audio(), 'http': http.Http(), 'clock': clock.Clock() }

@@ -36,24 +36,24 @@ module.exports = function(params) {
   intel.login = function(params) {
     intel.mturk =  require('./mturk')({creds: params, sandbox: false});
 
-    // fs.readFile('./uploads/kyle.jpg', function(err, file_buffer){
-    //   var params = {Bucket: 'mc-untitled', Key: 'test.jpg', Body: file_buffer, ACL:'public-read'};
+    fs.readFile('./uploads/kyle.jpg', function(err, file_buffer){
+      var params = {Bucket: 'mc-untitled', Key: 'test.jpg', Body: file_buffer, ACL:'public-read'};
 
-    //   s3.putObject(params, function(err, data) {
+      s3.putObject(params, function(err, data) {
 
-    //     if (err) console.log(err)     
+        if (err) console.log(err)     
 
-    //     else console.log("Successfully uploaded data to mc-untitled/myKey");   
+        else console.log("Successfully uploaded data to mc-untitled/myKey");   
 
-    //   });
-    // });
+      });
+    });
 
 
     fs.readFile('./data/config.json', 'utf8', function(err, data) {
       if (data) data = JSON.parse(data);
       else data = {};
-      data.accessKey = params.accessKey;
-      data.secretKey = params.secretAccessKey;
+      data.accessKeyId = params.accessKeyId;
+      data.secretAccessKey = params.secretAccessKey;
   
       fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
         if (err) throw err;
