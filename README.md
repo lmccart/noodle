@@ -4,7 +4,7 @@ git clone git@github.com:lmccart/untitled.git
 cd untitled
 npm install
 
-pip install -U socketIO-client
+sudo pip install -U socketIO-client
 (https://pypi.python.org/pypi/socketIO-client)
 
 
