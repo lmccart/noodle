@@ -73,16 +73,20 @@ module.exports = function(params) {
     intel.mturk.RegisterHITType(RegisterHITTypeOptions, function(err, HITTypeId){
       if (err) throw err;
 
-      fs.readFile("./data/question_form_sa.xml", 'utf8', function(err, data) {
+      fs.readFile('./data/question_form_'+task.query.type+'.xml', 'utf8', function(err, data) {
         if (err) throw err;
 
         parseString(data, function (err, result) {
           console.log(result);
           result.QuestionForm.Question[0].QuestionContent[0].Text[0] = [task.query.question];
 
+          if (task.query.type == 'mc') {
+
+          }
+
           result.attr = {xmlns:"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd"};
           result = json2xml(result, { attributes_key:'attr' });
-          
+
           var CreateHITOptions = {
             'HITTypeId': HITTypeId
             , 'Question': result

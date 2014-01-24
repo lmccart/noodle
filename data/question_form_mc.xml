@@ -19,18 +19,22 @@
         <StyleSuggestion>radiobutton</StyleSuggestion>
         <Selections>
           <Selection>
-            <SelectionIdentifier>0</SelectionIdentifier>
-            <Text>Choice 0</Text>
+            <SelectionIdentifier>A0</SelectionIdentifier>
+            <Text>Answer0</Text>
           </Selection>
+        </Selections>
+        <Selections>
           <Selection>
-            <SelectionIdentifier>1</SelectionIdentifier>
-            <Text>Choice 1</Text>
+            <SelectionIdentifier>A1</SelectionIdentifier>
+            <Text>Answer1</Text>
           </Selection>
+        </Selections>
+        <Selections>
           <Selection>
-            <SelectionIdentifier>2</SelectionIdentifier>
-            <Text>Choice 2</Text>
+            <SelectionIdentifier>A2</SelectionIdentifier>
+            <Text>Answer2</Text>
           </Selection>
-        </Selections>  
+        </Selections>
       </SelectionAnswer>
     </AnswerSpecification>
   </Question>

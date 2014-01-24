@@ -19,14 +19,16 @@
         <StyleSuggestion>radiobutton</StyleSuggestion>
         <Selections>
           <Selection>
-            <SelectionIdentifier>0</SelectionIdentifier>
+            <SelectionIdentifier>Yes</SelectionIdentifier>
             <Text>Yes</Text>
           </Selection>
+        </Selections>
+        <Selections>
           <Selection>
-            <SelectionIdentifier>1</SelectionIdentifier>
+            <SelectionIdentifier>No</SelectionIdentifier>
             <Text>No</Text>
           </Selection>
-        </Selections>  
+        </Selections>
       </SelectionAnswer>
     </AnswerSpecification>
   </Question>
