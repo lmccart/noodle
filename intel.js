@@ -132,11 +132,7 @@ module.exports = function(params) {
                       var task = _.find(tasks, function(t) { console.log(t.id, HIT.HITId); return t.id == HIT.HITId; });
                       
                       if (task) {
-                        task.status = 2; // update status to responded
                         task.query.answer = answer;
-                        console.log('found task');
-                        console.log(task);
-
                         cb(task);
                       }
                     });
@@ -155,27 +151,4 @@ module.exports = function(params) {
 };
 
 
-
-/*
-
-TASK (format)
-
-date - date
-status - int
-trigger - 
-query - obj
-  input - 
-  question - string
-action - 
-
-
-
-
-STATUS
-
-0 - set
-1 - triggered
-2 - responded
-
-*/
 
