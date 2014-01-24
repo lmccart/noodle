@@ -24,7 +24,7 @@ module.exports = function(params) {
     , Keywords: "keyword1, keyword2, keyword3" 
     , Description: "Test description"
     , Reward: {Amount: 0.01, CurrencyCode: "USD"}
-    , AssignmentDurationInSeconds: 3600
+    , AssignmentDurationInSeconds: 120
     , AutoApprovalDelayInSeconds: 3600
     , QualificationRequirement: []
   };
@@ -119,9 +119,9 @@ module.exports = function(params) {
                 if (assignment) {
                   if (assignment.AssignmentStatus === "Submitted") {
 
-                    // intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
-                    //   console.log("approved "+assignment.AssignmentId);
-                    // });
+                    intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+                      console.log("approved "+assignment.AssignmentId);
+                    });
 
                     parseString(assignment.Answer, function (err, result) {
                       var answer;
