@@ -8,6 +8,17 @@ module.exports = function(server) {
     , io = require('socket.io').listen(server)
 
   var socket;
+  io.sockets.on('connection', function (skt) {
+    socket = skt;
+    console.log("connect"+socket);
+    
+    socket.emit('register', { modal: 'clock', event: 'time' });
+
+    socket.on('event', function (data) {
+      handleEvent(data);
+    });
+
+  });
 
   var scheduler = {};
   scheduler.tasks = [];
@@ -19,34 +30,6 @@ module.exports = function(server) {
     for (var i=0; i<data.length; i++) {
       scheduler.tasks.push(data[i]); 
     }
-
-    io.sockets.on('connection', function (skt) {
-      socket = skt;
-      console.log("connect"+socket);
-      
-      socket.emit('register', { modal: 'clock', event: 'time' });
-      // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-      // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-      // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-      // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-      // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-      // socket.emit('fire', { modal: 'ht', event:'ping', args:'http://lauren-mccarthy.com/private/bird.php' });
-      
-      /*socket.on('aaa', function (data) {
-        console.log('node received: '+data);
-        socket.emit('aaa_response', { hello: 'world' });
-      });
-
-      socket.on('test', function (data) {
-        console.log('test node received: '+data);
-      });*/
-
-      socket.on('event', function (data) {
-        //console.log('event received: ', data);
-        handleEvent(data);
-      });
-
-    });
 
     scheduler.checkInterval = setInterval(scheduler.update, 500);
 
@@ -61,12 +44,14 @@ module.exports = function(server) {
     // pend temp testing!
     scheduler.intel.createHit( task, function(id) {
       task.id = id;
+
+      // sync storage
+      fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
+        if (err) throw err;
+      });
     });
 
-    // sync storage
-    fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
-      if (err) throw err;
-    });
+
 
   };
 
@@ -94,25 +79,26 @@ module.exports = function(server) {
 
     // check for responses
     if (scheduler.intel.mturk) {
-      scheduler.intel.checkForHits(scheduler.tasks);
+      scheduler.intel.checkForHits(scheduler.tasks, scheduler.fireTask);
     }
+  };
 
-    var responded = _.filter(scheduler.tasks, function(t){ return t.status === 2 });
-    _.each(responded, function(elt) {
+  scheduler.fireTask = function(task) {
+    console.log('fire '+task.query.answer);
+    var a;
+    if (task.query.type == 'sa') a = 0;
+    else if (task.query.type == 'tf') a = (task.query.answer == 'Yes') ? 0 : 1;
+    else if (task.query.type == 'mc') a = parseInt(task.query.answer.substring(1), 10);
+    console.log("a = "+a);
 
-      // execute action
-      var a = (task.actions.length === 1) ? task.actions[0] : task.actions[task.query.answer];
-      socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1)});
-    });
+    console.log(task.actions);
+    socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1)});
 
-    // remove finished tasks
-    scheduler.tasks = _.filter(scheduler.tasks, function(t){ return t.status !== 2 });
+    scheduler.removeTask(task.id);
 
-    // sync storage    
     fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
       if (err) throw err;
     });
-
   };
 
   scheduler.handleEvent = function(event) {

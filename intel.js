@@ -50,7 +50,7 @@ module.exports = function(params) {
     console.log('create hit '+task);
 
 
-    RegisterHITTypeOptions.Title = 'testing';
+    RegisterHITTypeOptions.Title = 'One question survey';
 
 
       // Step 1: First we have to create a HITTypeId
@@ -105,7 +105,7 @@ module.exports = function(params) {
 
   }
 
-  intel.checkForHits = function(tasks) {
+  intel.checkForHits = function(tasks, cb) {
     intel.mturk.GetReviewableHITs({}, function(err, result){
       if (result) {
         var hits = (result.HIT instanceof Array) ? result.HIT : [result.HIT];
@@ -119,18 +119,25 @@ module.exports = function(params) {
                 if (assignment) {
                   if (assignment.AssignmentStatus === "Submitted") {
 
-                    intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
-                      console.log("approved "+assignment.AssignmentId);
-                    });
+                    // intel.mturk.ApproveAssignment({"AssignmentId": assignment.AssignmentId, "RequesterFeedback": "Great work!"}, function(err, id){ 
+                    //   console.log("approved "+assignment.AssignmentId);
+                    // });
 
                     parseString(assignment.Answer, function (err, result) {
-                      var answer = result.QuestionFormAnswers.Answer[0].FreeText[0];
-                      console.dir(answer);
-                      var task = _.find(tasks, function(t) { return t.id == HIT.HITId; });
+                      var answer;
+                      var resp = result.QuestionFormAnswers.Answer[0];
+                      if (resp.FreeText) answer = resp.FreeText[0];
+                      else if (resp.SelectionIdentifier) answer = resp.SelectionIdentifier[0];
+                      console.log(answer);
+                      var task = _.find(tasks, function(t) { console.log(t.id, HIT.HITId); return t.id == HIT.HITId; });
                       
                       if (task) {
                         task.status = 2; // update status to responded
                         task.query.answer = answer;
+                        console.log('found task');
+                        console.log(task);
+
+                        cb(task);
                       }
                     });
                   }

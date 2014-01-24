@@ -42,13 +42,13 @@ class Socket(threading.Thread):
         modals[m].deregister(e)  
 
   def on_fire(*args):
+    print 'fire', args
     m = args[1]['modal']
     e = args[1]['event']
-    a = args[1]['args']
     if m in modals.keys():
       if not modals[m].running:
         modals[m].start()
-      modals[m].fire(e, a)  
+      modals[m].fire(e)  
 
 
 class Monitor(threading.Thread):
