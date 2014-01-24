@@ -7,6 +7,8 @@ npm install
 sudo pip install -U socketIO-client
 (https://pypi.python.org/pypi/socketIO-client)
 
+cd data
+config.js > {"accessKeyId":"","secretAccessKey":"","region":"us-west-2"}
 
 ## to run (for now)
 node app.js
