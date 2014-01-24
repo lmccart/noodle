@@ -1,1 +1,1 @@
-[]
+[{"trigger":["clock","time","is better than","d"],"query":{"type":"sa","question":"What is this image?"},"actions":[["camera","movement"]],"id":"2ACHYW2GTP9RXKQEO5S6FYSQEXJNSD","date":"2014-01-24T22:30:41.576Z","status":0}]

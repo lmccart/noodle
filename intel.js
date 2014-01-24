@@ -5,7 +5,11 @@ module.exports = function(params) {
       , util = require("util")
       , parseString = require('xml2js').parseString
       , json2xml = require('json2xml')
-      , _ = require('underscore');
+      , _ = require('underscore')
+      , aws = require('aws-sdk');
+
+  aws.config.loadFromPath('./data/config.json'); 
+  var s3 = new aws.S3();
 
   var intel = {};
   intel.mturk = null;
@@ -14,7 +18,7 @@ module.exports = function(params) {
   // attempt login from config file
   fs.readFile('./data/config.json', 'utf8', function(err, data) {
     if (data) data = JSON.parse(data);
-    if (data.accessKey && data.secretKey) {
+    if (data.accessKeyId && data.secretAccessKey) {
       intel.login(data);
     }
   });
@@ -32,11 +36,24 @@ module.exports = function(params) {
   intel.login = function(params) {
     intel.mturk =  require('./mturk')({creds: params, sandbox: false});
 
+    // fs.readFile('./uploads/kyle.jpg', function(err, file_buffer){
+    //   var params = {Bucket: 'mc-untitled', Key: 'test.jpg', Body: file_buffer, ACL:'public-read'};
+
+    //   s3.putObject(params, function(err, data) {
+
+    //     if (err) console.log(err)     
+
+    //     else console.log("Successfully uploaded data to mc-untitled/myKey");   
+
+    //   });
+    // });
+
+
     fs.readFile('./data/config.json', 'utf8', function(err, data) {
       if (data) data = JSON.parse(data);
       else data = {};
       data.accessKey = params.accessKey;
-      data.secretKey = params.secretKey;
+      data.secretKey = params.secretAccessKey;
   
       fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
         if (err) throw err;

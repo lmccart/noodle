@@ -24,8 +24,8 @@ var crypto = require('crypto')
 module.exports = function(settings) {
 
 	var mturk = {};
-	mturk.accessKey = settings.creds.accessKey;
-	mturk.secretKey = settings.creds.secretKey;
+	mturk.accessKey = settings.creds.accessKeyId;
+	mturk.secretKey = settings.creds.secretAccessKey;
 	mturk.sandbox = settings.sandbox || false;
 	mturk.version = "2012-03-25";
 	mturk.service = "AWSMechanicalTurkRequester";
