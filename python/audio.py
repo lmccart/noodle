@@ -3,7 +3,7 @@ import struct
 import math
 
 
-INITIAL_TAP_THRESHOLD = 0.020
+INITIAL_TAP_THRESHOLD = 0.015
 FORMAT = pyaudio.paInt16 
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -15,7 +15,7 @@ OVERSENSITIVE = 15.0/INPUT_BLOCK_TIME
 # if we get this many quiet blocks in a row, decrease the threshold
 UNDERSENSITIVE = 120.0/INPUT_BLOCK_TIME 
 # if the noise was longer than this many blocks, it's not a 'tap'
-MAX_TAP_BLOCKS = 0.5/INPUT_BLOCK_TIME
+MAX_TAP_BLOCKS = 1.20/INPUT_BLOCK_TIME
 
 def get_rms( block ):
   # RMS amplitude is defined as the square root of the 
@@ -128,8 +128,7 @@ class Audio(object):
         self.tap_threshold *= 1.1
     else:            
       # quiet block.
-
-      if MAX_TAP_BLOCKS >= self.noisycount >= 3:
+      if MAX_TAP_BLOCKS >= self.noisycount >= 1:
         self.loudDetected()
       self.noisycount = 0
       self.quietcount += 1

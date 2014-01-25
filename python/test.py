@@ -36,11 +36,11 @@ class Socket(threading.Thread):
     e = args[1]['event']
     print "register", m, e
     if m in modals.keys(): 
-      if not modals[m].running:
-        modals[m].start()
       if not e in modals[m].registered_events:
         modals[m].registered_events.append(e)
-        print modals[m].registered_events, m
+      if not modals[m].running:
+        modals[m].start()
+        print 'registered ', modals[m].registered_events, m
 
   def on_deregister(*args):
     m = args[1]['modal']
