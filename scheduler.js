@@ -21,7 +21,7 @@ module.exports = function(server) {
     socket = skt;
     console.log("connect"+socket);
     
-    socket.emit('register', { modal: 'audio', event: 'loud noise' });
+    socket.emit('register', { modal: 'audio', event: ['loud noise'] });
 
     socket.on('detected', function (data) {
       console.log("handle", data)
@@ -46,26 +46,6 @@ module.exports = function(server) {
     scheduler.tasks.push(task);
     // register task with python
     socket.emit('register', { modal: task.trigger[0], event: task.trigger.slice(1) });
-
-    // pend temp testing!
-    scheduler.intel.createHit( task, function(id) {
-      task.hit_id = id;
-
-      // solicit python input
-      if (task.query.input.length > 0) {
-        socket.emit('input', { modal:task.query.input[0], event:task.query.input[1], id:task.id });
-      }
-
-      // sync storage
-      fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
-        if (err) throw err;
-      });
-
-      // hack, schedule upload to give python time to do task
-      setTimeout(function(){ scheduler.uploadFile(task.id+'.png'); }, 2000);
-
-    });
-
   };
 
   scheduler.uploadFile = function(file) {
@@ -118,7 +98,7 @@ module.exports = function(server) {
     console.log("a = "+a);
 
     console.log(task.actions);
-    socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1)});
+    socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1), id:task.id });
 
     scheduler.removeTask(task.id);
 
@@ -127,27 +107,34 @@ module.exports = function(server) {
     });
   };
 
-  scheduler.handleEvent = function(event) {
+  scheduler.handleEvent = function(data) {
 
-    console.log('handleEvent '+event);
-    // var triggered = _.filter(scheduler.tasks, function(t){ return t.status === 0 && t.trigger === event.type; });
-    // _.each(triggered, function(elt) {
-    //   elt.status = 1;
+    console.log('handleEvent '+data);
+    console.log(scheduler.tasks);
+    console.log(data.event);
+    // pend hack for now
+    var triggered = _.filter(scheduler.tasks, function(t){ return t.trigger.slice(1)[0] == data.event[0]; });
+    _.each(triggered, function(task) {
+      console.log('found task ', task)
+      scheduler.intel.createHit( task, function(id) {
+        task.hit_id = id;
 
-    //   scheduler.intel.createHit( elt, function(id) {
-    //     elt.id = id;
-    //   });
-    // });
+        // solicit python input
+        if (task.query.input.length > 0) {
+          socket.emit('fire', { modal:task.query.input[0], event:task.query.input[1], id:task.id });
+        }
 
+        // sync storage
+        fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
+          if (err) throw err;
+        });
 
-    // // sync storage    
-    // fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
-    //   if (err) throw err;
-    // });
+        // hack, schedule upload to give python time to do task
+        setTimeout(function(){ scheduler.uploadFile(task.id+'.png'); }, 2000);
+
+      });
+    });
   };
-
-
-  
 
 
   return scheduler;

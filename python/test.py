@@ -53,11 +53,11 @@ class Socket(threading.Thread):
     print 'fire', args
     m = args[1]['modal']
     e = args[1]['event']
-    a = args[1]['args']
+    i = args[1]['id']
     if m in modals.keys():
       if not modals[m].running:
         modals[m].start()
-      modals[m].fire(e, a)  
+      modals[m].fire(e, i)  
 
   def on_input(*args):
     print 'input', args

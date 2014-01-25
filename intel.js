@@ -136,7 +136,7 @@ module.exports = function(params) {
                       if (resp.FreeText) answer = resp.FreeText[0];
                       else if (resp.SelectionIdentifier) answer = resp.SelectionIdentifier[0];
                       console.log(answer);
-                      var task = _.find(tasks, function(t) { console.log(t.id, HIT.HITId); return t.id == HIT.HITId; });
+                      var task = _.find(tasks, function(t) { console.log(t.hit_id, HIT.HITId); return t.hit_id == HIT.HITId; });
                       
                       if (task) {
                         task.query.answer = answer;

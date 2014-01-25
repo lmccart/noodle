@@ -3,7 +3,7 @@ import struct
 import math
 
 
-INITIAL_TAP_THRESHOLD = 0.025
+INITIAL_TAP_THRESHOLD = 0.020
 FORMAT = pyaudio.paInt16 
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -103,8 +103,8 @@ class Audio(object):
   def loudDetected(self):
     print "Loud!"
     print self.registered_events
-    self.registered_events.remove('loud noise')
-    self.detected_events.append('loud noise')
+    self.registered_events.remove(['loud noise'])
+    self.detected_events.append(['loud noise'])
     print self.detected_events
 
   def listen(self):
@@ -129,7 +129,7 @@ class Audio(object):
     else:            
       # quiet block.
 
-      if MAX_TAP_BLOCKS >= self.noisycount >= 1:
+      if MAX_TAP_BLOCKS >= self.noisycount >= 3:
         self.loudDetected()
       self.noisycount = 0
       self.quietcount += 1
