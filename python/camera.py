@@ -1,26 +1,21 @@
-import urllib2
-
-class Http(object):
+class Camera(object):
   def __init__(self):
     self.running = False;
     self.registered_events = [];
 
   def start(self):
-    print "STARTING HTTP"
     self.running = True;
 
   def stop(self):
     self.running = False;
 
   def register(self, event):
-    return;
+  	return;
 
   def fire(self, event, args):
-    self.ping(args)
-
-  def ping(self, url):
-    response = urllib2.urlopen(url).read()
-    print response
+  	return;
 
   def do_input(self, event, args):
-    return;
+    print 'do input camera', args
+    # here is where you take the picture
+    # also upload to mturk?

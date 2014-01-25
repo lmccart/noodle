@@ -63,6 +63,12 @@ class Audio(object):
     self.running = False;
     self.stream.close()
 
+  def fire(self, event, args):
+    return;
+
+  def do_input(self, event, args):
+    return;
+
   # def find_input_device(self):
   #   device_index = None            
   #   for i in range( self.pa.get_device_count() ):     

@@ -12,8 +12,9 @@ import wave
 import audio
 import http
 import clock
+import camera
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 class Socket(threading.Thread):
   def __init__(self, modals):
@@ -51,10 +52,11 @@ class Socket(threading.Thread):
     print 'fire', args
     m = args[1]['modal']
     e = args[1]['event']
+    a = args[1]['args']
     if m in modals.keys():
       if not modals[m].running:
         modals[m].start()
-      modals[m].fire(e)  
+      modals[m].fire(e, a)  
 
   def on_input(*args):
     print 'input', args
@@ -64,7 +66,7 @@ class Socket(threading.Thread):
     if m in modals.keys():
       if not modals[m].running:
         modals[m].start()
-      modals[m].fire(e)  
+      modals[m].do_input(e, i)  
 
 
 class Monitor(threading.Thread):
@@ -81,7 +83,7 @@ class Monitor(threading.Thread):
       time.sleep(1);
 
 if __name__ == '__main__':
-  modals = { 'audio': audio.Audio(), 'http': http.Http(), 'clock': clock.Clock() }
+  modals = { 'audio': audio.Audio(), 'http': http.Http(), 'clock': clock.Clock(), 'camera': camera.Camera() }
   socket = Socket(modals)
   monitor = Monitor(modals)
   #path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))

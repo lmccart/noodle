@@ -13,3 +13,9 @@ class Http(object):
 
   def register(self, event):
   	return;
+
+  def fire(self, event, args):
+  	return;
+
+  def do_input(self, event, args):
+  	return;

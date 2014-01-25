@@ -12,3 +12,9 @@ class Clock(object):
   def register(self, event):
   	print ("registered ", event)
   	return;
+
+  def fire(self, args):
+    return;
+
+  def do_input(self, args):
+    return;
