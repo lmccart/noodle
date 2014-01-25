@@ -86,6 +86,13 @@ module.exports = function(params) {
             }
           }
 
+          // pend hack for now, implement rest with system
+          if (task.query.input[0] == 'camera') {
+            if (task.query.input[1] == 'take a photo') {
+              result.QuestionForm.Overview[0].Binary[0].DataURL[0] = 'https://s3-us-west-2.amazonaws.com/mc-untitled/'+task.id+'.png';
+            }
+          }
+ 
           result.attr = {xmlns:"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd"};
           result = json2xml(result, { attributes_key:'attr' });
 

@@ -4,12 +4,16 @@ import time
 import sys
 import threading
 import subprocess
+import os.path
+
+import pyaudio
+import wave
 
 import audio
 import http
 import clock
 
-#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 class Socket(threading.Thread):
   def __init__(self, modals):
@@ -20,6 +24,7 @@ class Socket(threading.Thread):
     self.socketIO.on("register", self.on_register)
     self.socketIO.on("deregister", self.on_deregister)
     self.socketIO.on("fire", self.on_fire)
+    self.socketIO.on("input", self.on_input)
     
   def run(self):
     self.socketIO.emit('aaa', {'begin':'yes'})
@@ -51,6 +56,16 @@ class Socket(threading.Thread):
         modals[m].start()
       modals[m].fire(e)  
 
+  def on_input(*args):
+    print 'input', args
+    m = args[1]['modal']
+    e = args[1]['event']
+    i = args[1]['id']
+    if m in modals.keys():
+      if not modals[m].running:
+        modals[m].start()
+      modals[m].fire(e)  
+
 
 class Monitor(threading.Thread):
   def __init__(self, modals):
@@ -65,16 +80,13 @@ class Monitor(threading.Thread):
           modals[m].stop();
       time.sleep(1);
 
-def startSocket(modals):
-  socket = Socket(modals)
-  command = "/usr/bin/arecord -D plughw:1,0 -d 10 -f S16_LE -c1 -r11025 -t wav test.wav"
-  log.info("%s" % command)
-  subprocess.check_call(command, shell=True)    
-
 if __name__ == '__main__':
   modals = { 'audio': audio.Audio(), 'http': http.Http(), 'clock': clock.Clock() }
   socket = Socket(modals)
   monitor = Monitor(modals)
+  #path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
+  #os.open(path)  
+  #print 'opened ', path
 
   socket.start()
   monitor.start()

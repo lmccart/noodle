@@ -35,7 +35,6 @@ module.exports = function(server) {
 
   });
 
-
   scheduler.addTask = function(task) {
     scheduler.tasks.push(task);
     // register task with python
@@ -43,14 +42,18 @@ module.exports = function(server) {
 
     // pend temp testing!
     scheduler.intel.createHit( task, function(id) {
-      task.id = id;
+      task.hit_id = id;
+
+      // solicit python input
+      if (task.query.input.length > 0) {
+        socket.emit('input', { modal:task.query.input[0], event:task.query.input[1], id:task.id });
+      }
 
       // sync storage
       fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
         if (err) throw err;
       });
     });
-
 
 
   };
@@ -63,7 +66,7 @@ module.exports = function(server) {
     });
 
     if (task) {
-      if (task.status > 0) scheduler.intel.removeHit( {'HITId':id} );
+      if (task.hit_id) scheduler.intel.removeHit( {'HITId':task.hit_id} );
     }
 
     scheduler.tasks = _.without(scheduler.tasks, task);

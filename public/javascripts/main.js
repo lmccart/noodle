@@ -17,13 +17,10 @@ var triggers = {
   }
 };
 
-var input = {
-  microphone: {
-    record: ['3s', '10s']
-  },
-  camera: ['take a photo', 'send 10s of video']
+var inputs = {
+  microphone: ['record 3s', 'record 10s'],
+  camera: ['take a photo', 'record 10s of video']
 };
-
 
 var actions = {
   microphone: {
@@ -95,8 +92,10 @@ function eraseAllAfter(elt) {
 }
 
 function startQuery() {
-  $('#query-selection').show();
+  $('#input-selection').show();
+  createDrop($('#input-type'), inputs, null);
 
+  $('#query-selection').show();
   $('#question-type').change(function(){
     task.query.type = ($(this).val());    
     $('#action-selection').show();
@@ -138,24 +137,16 @@ function updateMC() {
   });
 
   var adivs = $('#action-selection .action');
-
-  // clear div and refill
-  //$('#action-selection').empty();
-
-  var num = Math.max(adivs.length, choices.length);
   
-
-  for (var i=0; i<num; i++) {
+  for (var i=0; i<Math.max(adivs.length, choices.length); i++) {
     if (i < choices.length) {
       var new_id = 'action_'+choices[i];
       var new_div = '<div class="action" id="'+new_id+'">If the human answers '+choices[i]+': <span class="part" id="'+new_id+'_"></span></div>';
         
       if (i < adivs.length && adivs[i].id != new_id) {
-        console.log('prepend '+new_id)
         $(new_div).insertBefore('#'+adivs[i].id); 
         createDrop($('#'+new_id+'_'), actions, null);
       } else if (i >= adivs.length) {
-        console.log('append '+new_id)
         $('#action-selection').append(new_div);
         createDrop($('#'+new_id+'_'), actions, null);
       }
@@ -165,28 +156,9 @@ function updateMC() {
   adivs = $('#action-selection .action');
   for (var i=0; i<adivs.length; i++) {
     if (!_.contains(choices, adivs[i].id.substring(7))) {
-      console.log('removing '+adivs[i].id);
       $('#'+adivs[i].id).remove();
     }
   }
-
-
-  // var adivs = $('#action-selection .action');
-
-  // for (var i=0; i<choices.length; i++) {
-  //   var new_id = 'action_'+choices[i];
-  //   var found = false;
-  //   for (var j=0; j<adivs.length; j++) {
-  //     if (adivs[j].id == new_id) {
-  //       $('#action-selection').append(adivs[j]);
-  //       found = true;
-  //     } 
-  //   }
-  //   if (!found) {
-  //     $('#action-selection').append('<div class="action" id="'+new_id+'">If the human answers '+choices[i]+': <span class="part" id="'+new_id+'_"></span></div>');
-  //     createDrop($('#'+new_id+'_'), actions, null);
-  //   }
-  // }
 }
 
 // index page
@@ -200,7 +172,10 @@ $('#submit').click(function(e){
   });
 
   // add query
-  if($('#input-type').val().length > 0) task.query.input = $('#input-type').val();
+  task.query.input = [];
+  $('#input-selection select').each(function(e) {
+    task.query.input.push($(this).val());
+  });
   task.query.question = $('textarea#question').val();
 
   // add choices for mc
@@ -240,7 +215,6 @@ $('#login').click(function(e){
 // manage page
 $('.remove').click(function(e){
   var hit = $(e.target).parent()[0].id;
-  console.log(hit);
   window.location = './remove?hit='+hit;
 });
 
