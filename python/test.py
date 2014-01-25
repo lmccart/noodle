@@ -32,21 +32,22 @@ class Socket(threading.Thread):
     self.socketIO.wait()
 
   def on_register(*args):
-    print "register"
     m = args[1]['modal']
     e = args[1]['event']
+    print "register", m, e
     if m in modals.keys(): 
       if not modals[m].running:
         modals[m].start()
       if not e in modals[m].registered_events:
-        modals[m].register(e) 
+        modals[m].registered_events.append(e)
+        print modals[m].registered_events, m
 
   def on_deregister(*args):
     m = args[1]['modal']
     e = args[1]['event']
     if m in modals.keys():
       if e in modals[m].registered_events:
-        modals[m].deregister(e)  
+        modals[m].registered_events.remove(e)
 
   def on_fire(*args):
     print 'fire', args
@@ -70,22 +71,31 @@ class Socket(threading.Thread):
 
 
 class Monitor(threading.Thread):
-  def __init__(self, modals):
+  def __init__(self, modals, socket):
     threading.Thread.__init__ (self)
     self.setDaemon(True)
     self.modals = modals
+    self.socket = socket
 
   def run(self):
     while 1: 
       for m in modals.keys():
         if len(modals[m].registered_events) == 0 and modals[m].running:
-          modals[m].stop();
-      time.sleep(1);
+          modals[m].stop()
+        if modals[m].running:
+          modals[m].update()
+        if modals[m].detected_events:
+          print "DETECTED IN ", m
+          for e in modals[m].detected_events:
+            print "EVENT ",e
+            self.socket.socketIO.emit('detected', {'event':e})
+          modals[m].detected_events = []
 
 if __name__ == '__main__':
-  modals = { 'audio': audio.Audio(), 'http': http.Http(), 'clock': clock.Clock(), 'camera': camera.Camera() }
+  modals = { 'audio': audio.Audio(), 'camera': camera.Camera() }
   socket = Socket(modals)
-  monitor = Monitor(modals)
+  monitor = Monitor(modals, socket)
+
   #path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
   #os.open(path)  
   #print 'opened ', path

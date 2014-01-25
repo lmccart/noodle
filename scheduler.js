@@ -6,23 +6,30 @@ module.exports = function(server) {
     , parseString = require('xml2js').parseString
     , _ = require('underscore')
     , io = require('socket.io').listen(server)
+    , aws = require('aws-sdk');
+
+  aws.config.loadFromPath('./data/config.json'); 
+  var s3 = new aws.S3();
+
+  var scheduler = {};
+  scheduler.tasks = [];
+  scheduler.intel = require('./intel')({tasks:scheduler.tasks});
+
 
   var socket;
   io.sockets.on('connection', function (skt) {
     socket = skt;
     console.log("connect"+socket);
     
-    socket.emit('register', { modal: 'clock', event: 'time' });
+    socket.emit('register', { modal: 'audio', event: 'loud noise' });
 
-    socket.on('event', function (data) {
-      handleEvent(data);
+    socket.on('detected', function (data) {
+      console.log("handle", data)
+      scheduler.handleEvent(data);
     });
 
   });
 
-  var scheduler = {};
-  scheduler.tasks = [];
-  scheduler.intel = require('./intel')({tasks:scheduler.tasks});
 
     // load stored tasks
   fs.readFile('./data/tasks.json', 'utf8', function(error, data) {
@@ -53,9 +60,25 @@ module.exports = function(server) {
       fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
         if (err) throw err;
       });
+
+      // hack, schedule upload to give python time to do task
+      setTimeout(function(){ scheduler.uploadFile(task.id+'.png'); }, 2000);
+
     });
 
+  };
 
+  scheduler.uploadFile = function(file) {
+    fs.readFile('./uploads/'+file, function(err, file_buffer){
+    var params = {Bucket: 'mc-untitled', Key: file, Body: file_buffer, ACL:'public-read'};
+
+      s3.putObject(params, function(err, data) {
+
+        if (err) console.log(err)     
+        else console.log("Successfully uploaded data to mc-untitled/"+file);   
+
+      });
+    });
   };
 
   scheduler.removeTask = function(id) {
@@ -106,20 +129,21 @@ module.exports = function(server) {
 
   scheduler.handleEvent = function(event) {
 
-    var triggered = _.filter(scheduler.tasks, function(t){ return t.status === 0 && t.trigger === event.type; });
-    _.each(triggered, function(elt) {
-      elt.status = 1;
+    console.log('handleEvent '+event);
+    // var triggered = _.filter(scheduler.tasks, function(t){ return t.status === 0 && t.trigger === event.type; });
+    // _.each(triggered, function(elt) {
+    //   elt.status = 1;
 
-      scheduler.intel.createHit( elt, function(id) {
-        elt.id = id;
-      });
-    });
+    //   scheduler.intel.createHit( elt, function(id) {
+    //     elt.id = id;
+    //   });
+    // });
 
 
-    // sync storage    
-    fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
-      if (err) throw err;
-    });
+    // // sync storage    
+    // fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
+    //   if (err) throw err;
+    // });
   };
 
 

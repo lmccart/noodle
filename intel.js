@@ -2,14 +2,10 @@
 module.exports = function(params) {
 
   var fs = require('fs')
-      , util = require("util")
-      , parseString = require('xml2js').parseString
-      , json2xml = require('json2xml')
-      , _ = require('underscore')
-      , aws = require('aws-sdk');
-
-  aws.config.loadFromPath('./data/config.json'); 
-  var s3 = new aws.S3();
+    , util = require("util")
+    , parseString = require('xml2js').parseString
+    , json2xml = require('json2xml')
+    , _ = require('underscore');
 
   var intel = {};
   intel.mturk = null;
@@ -35,19 +31,6 @@ module.exports = function(params) {
 
   intel.login = function(params) {
     intel.mturk =  require('./mturk')({creds: params, sandbox: false});
-
-    fs.readFile('./uploads/kyle.jpg', function(err, file_buffer){
-      var params = {Bucket: 'mc-untitled', Key: 'test.jpg', Body: file_buffer, ACL:'public-read'};
-
-      s3.putObject(params, function(err, data) {
-
-        if (err) console.log(err)     
-
-        else console.log("Successfully uploaded data to mc-untitled/myKey");   
-
-      });
-    });
-
 
     fs.readFile('./data/config.json', 'utf8', function(err, data) {
       if (data) data = JSON.parse(data);

@@ -5,9 +5,7 @@ var task = {
 };
 
 var triggers = {
-  microphone: {
-    noise: ['is louder than', 'is quieter than']
-  },
+  audio: ['loud noise', 'quiet'],
   camera: {
     movement: ['is bigger than', 'makes more sense than'],
     faces: ['is bigger than', 'makes more sense than']
@@ -65,7 +63,8 @@ function createDrop(elt, obj, cb) {
       for (var i=0; i<mans.length; i++) {
       }
       eraseAllAfter(elt);
-      elt.parent().append('<input type="text" class="part" id="'+new_id+'"/>');
+      //elt.parent().append('<input type="text" class="part" id="'+new_id+'"/>');
+      if (cb) cb();
       $('#'+new_id).change(function() {    
         if (cb) cb();
       });
