@@ -54,8 +54,6 @@ class Socket(threading.Thread):
     e = args[1]['event']
     i = args[1]['id']
     if m in modals.keys():
-      if not modals[m].running:
-        modals[m].start()
       modals[m].fire(e, i)
 
 class Monitor(threading.Thread):
