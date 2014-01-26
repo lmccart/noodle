@@ -21,16 +21,7 @@ var inputs = {
 };
 
 var actions = {
-  microphone: {
-    noise: ['is louder than', 'is quieter than']
-  },
-  camera: {
-    movement: ['is bigger than', 'makes more sense than'],
-    faces: ['is bigger than', 'makes more sense than']
-  },
-  clock: {
-    time: ['is later than', 'is better than']
-  }
+  audio: ['play']
 };
 
 
@@ -59,11 +50,12 @@ function createDrop(elt, obj, cb) {
     //task.trigger.push($(this).val());
     var new_id = elt.attr('id') + '_';
     if (is_arr) {
-      var mans = elt.parent().children();
-      for (var i=0; i<mans.length; i++) {
-      }
       eraseAllAfter(elt);
-      //elt.parent().append('<input type="text" class="part" id="'+new_id+'"/>');
+      if (keys[0] == 'play') {
+        elt.parent().append('<form id="'+new_id+'_uploadForm" enctype="multipart/form-data" action="/upload" method="post"><input type="file" id="'+new_id+'_userPhotoInput" name="userPhoto" /></form><span id="'+new_id+'_status" />');
+        hookUpload(new_id);
+      }
+      
       if (cb) cb();
       $('#'+new_id).change(function() {    
         if (cb) cb();
@@ -192,7 +184,9 @@ $('#submit').click(function(e){
       a.push($(this).val());
     });
     $(this).find('input').each(function() {
-      a.push($(this).val());
+      var str = $(this).val();
+      var n = str.lastIndexOf('\\'); // kill the full path
+      a.push(str.substring(n+1));
     });
     task.actions.push(a);
   });
@@ -218,4 +212,39 @@ $('.remove').click(function(e){
 });
 
 
+// helper for uploads
+function hookUpload(id) {
 
+  // Check to see when a user has selected a file                                                                                                                
+  var timerId;
+  timerId = setInterval(function() {
+    if($('#'+id+'_userPhotoInput').val() !== '') {
+      clearInterval(timerId);
+      $('#'+id+'_uploadForm').submit();
+    }
+  }, 500);
+   
+  $('#'+id+'_uploadForm').submit(function() {
+      //$('#'+id+'_status').html('uploading the file ...');
+
+    $(this).ajaxSubmit({                                                                                                                 
+
+      error: function(xhr) {
+        $('#'+id+'_status').html('Error: ' + xhr.status);
+      },
+
+      success: function(response) {
+
+        if(response.error) {
+            $('#'+id+'_status').html('Oops, something bad happened');
+            return;
+        }
+        //$('#'+id+'_status').html('Success!');
+      }
+    });
+   
+    // Stop the form from submitting and causing a page refresh                                                                                                                    
+    return false;
+  });
+
+}

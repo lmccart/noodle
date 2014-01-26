@@ -21,7 +21,7 @@ module.exports = function(server) {
     socket = skt;
     console.log("connect"+socket);
     
-    socket.emit('register', { modal: 'audio', event: ['loud noise'] });
+    //socket.emit('register', { modal: 'audio', event: ['loud noise'] });
 
     socket.on('detected', function (data) {
       console.log("handle", data)

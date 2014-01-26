@@ -54,8 +54,42 @@ app.isLoggedIn = function() {
 app.addTask = function(task) {
   task.id = new Date().getTime().toString();
   task.date = new Date();
-  task.status = 0;
   scheduler.addTask(task);
+  for (var i=0; i<task.actions.length; i++) {
+    for (var j=0; j<task.actions[i].length; j++) {
+      if (task.actions[i][j] == 'play') {
+        app.upload(task.actions[i][j+1]);
+      }
+    }
+  }
+};
+
+app.upload = function(file) {
+  console.log(file.substring(12));
+  // fs.readFile(req.files.audio.path, function (err, data) {
+
+  //   var imageName = req.files.audio.name
+
+  //   /// If there's an error
+  //   if(!imageName){
+  //     console.log("There was an error, please try again.")
+  //     res.redirect("/");
+  //     res.end();
+
+  //   } else {
+
+  //     var newPath = __dirname + "/uploads/" + imageName;
+
+  //     /// write file to uploads/fullsize folder
+  //     fs.writeFile(newPath, data, function (err) {
+  //       if (err) {
+  //         console.log("There was an error, please try again.")
+  //         res.redirect("/");
+  //         res.end();
+  //       } else res.redirect("uploads/" + imageName);
+  //     });
+  //   }
+  // });
 };
 
 app.removeTask = function(id) {
