@@ -28,6 +28,95 @@ var actions = {
 window.onload=function(){
   createDrop($('#triggers'), triggers, startQuery);
   $('#trigger-selection').show();
+
+
+  // index page
+  $('#submit').click(function(e){
+    // add triggers
+    $('#trigger-selection select').each(function() {
+      task.trigger.push($(this).val());
+    });
+    $('#trigger-selection input').each(function() {
+      task.trigger.push($(this).val());
+    });
+
+    // add query
+    task.query.input = [];
+    $('#input-selection select').each(function(e) {
+      task.query.input.push($(this).val());
+    });
+    task.query.question = $('textarea#question').val();
+
+    // add choices for mc
+    if (task.query.type === 'mc') {
+      task.query.choices = [];
+      $('#query-selection input').each(function(e) {
+        task.query.choices.push($(this).val());
+      });
+    }
+
+    // add actions
+    $('#action-selection .action').each(function() {
+      var a = [];
+      $(this).find('select').each(function() {
+        a.push($(this).val());
+      });
+      $(this).find('input').each(function() {
+        var str = $(this).val();
+        var n = str.lastIndexOf('\\'); // kill the full path
+        a.push(str.substring(n+1));
+      });
+      task.actions.push(a);
+    });
+
+    console.log(task);
+    $.ajax({
+      url:"/add",
+      type:"POST",
+      data:task, 
+      success:function (res) { console.log(res); window.location = './manage' }
+    });
+  });
+
+  $('input').on('focus', function(){
+    $(this).val('');
+    //resizeForContent('#'+$(this).attr('id'), $(this).val());
+  });
+
+  $('input').on('focusout', function(){
+    if ($(this).val().length == 0) $(this).val('____________');
+    resizeForContent('#'+$(this).attr('id'), $(this).val());
+  });
+
+  $('input').on('keydown', function(){
+    resizeForContent('#'+$(this).attr('id'), $(this).val()+'m');
+  });
+
+  $('input').each(function(e) {
+    resizeForContent('#'+$(this).attr('id'), $(this).val());
+  });
+
+  $('#question-type').change(function() {
+    resizeForContent('#'+$(this).attr('id'), $('#question-type option:selected').text());
+  });
+
+  // $('input').change(function() {
+  //   console.log($(this).val().length, $(this).val());
+  //   if ($(this).val().length == 0) $(this).val('____________');
+  // });
+
+  // login page
+  $('#login').click(function(e){
+    window.location = './?s='+$('input#secret_key').val()+'&a='+$('input#access_key').val();
+  });
+
+  // manage page
+  $('.remove').click(function(e){
+    var hit = $(e.target).parent()[0].id;
+    window.location = './remove?hit='+hit;
+  });
+
+
 };
 
 function createDrop(elt, obj, cb) {
@@ -40,13 +129,21 @@ function createDrop(elt, obj, cb) {
     _.each( obj, function( val, key ) { keys.push(key); });
   }
 
-  var insert = '<select><option value=""></option>';
+  var insert = '<select><option value="">_______</option>';
   for (var i=0; i<keys.length; i++) {
     insert += '<option value="'+keys[i]+'">'+keys[i]+'</option>';
   }
   insert += '</select>';
   elt.html(insert);
-  $('#'+elt.attr('id')+' select').change(function(){
+
+  var selector = '#'+elt.attr('id')+' select';
+  resizeForContent(selector, '_______');
+
+  resizeForContent(elt.attr('id')+' select', '_______');
+
+  $(selector).change(function(){
+    resizeForContent(selector, $(this).val());
+
     //task.trigger.push($(this).val());
     var new_id = elt.attr('id') + '_';
     if (is_arr) {
@@ -62,11 +159,16 @@ function createDrop(elt, obj, cb) {
       });
     } else {
       eraseAllAfter(elt);
-      elt.parent().append('<span class="part" id="'+new_id+'"></span>');
+      elt.parent().append(' <span class="part" id="'+new_id+'"></span>');
       elt.parent().append(createDrop($('#'+new_id), obj[$(this).val()], cb));
     }
   });
   
+}
+
+function resizeForContent(selector, content) {
+  $('#test').html(content);
+  $(selector).width($('#test').width());
 }
 
 function eraseAllAfter(elt) {
@@ -98,7 +200,7 @@ function startQuery() {
     buildActions();
   });
 
-  $('#query-selection input').change(function() {
+  $('#query-selection input.mc').change(function() {
     updateMC();
   });
 
@@ -123,8 +225,8 @@ function buildActions() {
 
 function updateMC() {
   var choices = [];
-  $('#query-selection input').each(function(e) {
-    if ($(this).val().length > 0) choices.push($(this).val());
+  $('#query-selection input.mc').each(function(e) {
+    if ($(this).val().indexOf('____') == -1 && $(this).val().length > 0) choices.push($(this).val());
   });
 
   var adivs = $('#action-selection .action');
@@ -152,64 +254,6 @@ function updateMC() {
   }
 }
 
-// index page
-$('#submit').click(function(e){
-  // add triggers
-  $('#trigger-selection select').each(function() {
-    task.trigger.push($(this).val());
-  });
-  $('#trigger-selection input').each(function() {
-    task.trigger.push($(this).val());
-  });
-
-  // add query
-  task.query.input = [];
-  $('#input-selection select').each(function(e) {
-    task.query.input.push($(this).val());
-  });
-  task.query.question = $('textarea#question').val();
-
-  // add choices for mc
-  if (task.query.type === 'mc') {
-    task.query.choices = [];
-    $('#query-selection input').each(function(e) {
-      task.query.choices.push($(this).val());
-    });
-  }
-
-  // add actions
-  $('#action-selection .action').each(function() {
-    var a = [];
-    $(this).find('select').each(function() {
-      a.push($(this).val());
-    });
-    $(this).find('input').each(function() {
-      var str = $(this).val();
-      var n = str.lastIndexOf('\\'); // kill the full path
-      a.push(str.substring(n+1));
-    });
-    task.actions.push(a);
-  });
-
-  console.log(task);
-  $.ajax({
-    url:"/add",
-    type:"POST",
-    data:task, 
-    success:function (res) { console.log(res); window.location = './manage' }
-  });
-});
-
-// login page
-$('#login').click(function(e){
-  window.location = './?s='+$('input#secret_key').val()+'&a='+$('input#access_key').val();
-});
-
-// manage page
-$('.remove').click(function(e){
-  var hit = $(e.target).parent()[0].id;
-  window.location = './remove?hit='+hit;
-});
 
 
 // helper for uploads

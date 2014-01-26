@@ -1,6 +1,6 @@
 body {
   padding: 50px;
-  font: 14px Helvetica, Arial, sans-serif;
+  font: 24px Helvetica, Arial, sans-serif;
 }
 a {
   color: #00B7FF;
@@ -13,6 +13,25 @@ a {
 
 .submodule {
 	display: none;
+}
+
+select, input, textarea {
+    padding:0;
+    margin: 0;
+    background: #f8f8f8;
+    color:#888;
+    border:none;
+    outline:none;
+    display: inline-block;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+
+	font: 24px Helvetica, Arial, sans-serif;
 }
 
 #query-selection,
@@ -32,13 +51,6 @@ a {
 
 .button:hover, .button.selected {
 	background: #99FF33;
-}
-
-textarea, input {
-	margin: 0 10px 10px 0;
-	padding: 5px;
-	border: none;
-	background: #E8E8E8;
 }
 
 a, a:hover {
