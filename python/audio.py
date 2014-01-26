@@ -65,11 +65,8 @@ class Audio(object):
     self.running = False
     self.stream.close()
 
-  def fire(self, event, args):
-    return
-
-  def do_input(self, event, args):
-    return
+  def fire(self, event, i):
+    print 'audio: fire ', event, i
 
   def find_input_device(self):
     device_index = None            
