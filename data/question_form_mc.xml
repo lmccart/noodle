@@ -4,6 +4,14 @@
     <Text>
         Please answer the question below.
     </Text>
+    <Binary>
+      <MimeType>
+        <Type>image</Type>
+        <SubType>gif</SubType>
+      </MimeType>
+      <DataURL>https://s3-us-west-2.amazonaws.com/mc-untitled/test.jpg</DataURL>
+      <AltText>The image.</AltText>
+    </Binary>
   </Overview>
 
   <Question>

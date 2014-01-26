@@ -1,9 +1,12 @@
 import pyaudio
 import struct
 import math
+import wave
+import sys
 
+CHUNK = 1024
 
-INITIAL_TAP_THRESHOLD = 0.015
+INITIAL_TAP_THRESHOLD = 0.025
 FORMAT = pyaudio.paInt16 
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -67,6 +70,27 @@ class Audio(object):
 
   def fire(self, event, i):
     print 'audio: fire ', event, i
+    if event[0] == 'play':
+      self.play(event[1])
+
+  def play(self, f):
+    print 'audio: playing ', f
+    wf = wave.open(f, 'rb')
+
+    stream = self.pa.open(   format = self.pa.get_format_from_width(wf.getsampwidth()),
+                             channels = wf.getnchannels(),
+                             rate = wf.getframerate(),
+                             output = True)
+    
+    data = wf.readframes(CHUNK)
+
+    while data != '':
+      stream.write(data)
+      data = wf.readframes(CHUNK)
+
+    stream.stop_stream()
+    stream.close()
+
 
   def find_input_device(self):
     device_index = None            

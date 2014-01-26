@@ -82,6 +82,9 @@ if __name__ == '__main__':
   socket = Socket(modals)
   monitor = Monitor(modals, socket)
 
+  path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
+  #modals['audio'].play(path)
+
   #path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
   #os.open(path)  
   #print 'opened ', path

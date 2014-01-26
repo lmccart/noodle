@@ -14,4 +14,9 @@ class Camera(object):
     self.running = False
 
   def fire(self, event, i):
-  	print 'camera: fire ', event, i
+    print 'camera: fire ', event, i
+    if event[0] == 'take a photo':
+      self.photo(i)
+
+  def photo(self, i):
+    print 'camera: take a photo ', i

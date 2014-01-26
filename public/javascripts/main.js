@@ -11,7 +11,7 @@ var triggers = {
     faces: ['is bigger than', 'makes more sense than']
   },
   clock: {
-    time: ['is later than', 'is better than']
+    time: ['an hour has passed', 'a minute has passed']
   }
 };
 
