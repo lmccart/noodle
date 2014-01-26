@@ -2,37 +2,16 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/bootstrap.css'>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
 
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">HCV</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <!--<li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>-->
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
+  
 
     <div class="container">
-
-      <div class="starter-template">
-		    <h1><%= title %></h1>
+        <div id="test" style="display:none"></div>
+		    <div>OK <%= title %>,</div>
 
 		    <div class="module" id="trigger-selection">
           When the <span id="triggers"></span>
@@ -42,10 +21,11 @@
           First
           <span id="input-type"></span>,  
         </div>
+
         <div class="module" id="query-selection">  
-          then ask the
+          then decide the answer to the 
           <select id="question-type">
-            <option value=""></option>
+            <option value="">____________</option>
             <option value="sa">short answer</option>
             <option value="tf">true false</option>
             <option value="mc">multiple choice</option>
@@ -53,9 +33,9 @@
           question:
           <textarea id="question" cols="40" rows="1" name="question"></textarea>
           <span class="submodule">with choices 
-          <input type="text" id="choices_0"/>, 
-          <input type="text" id="choices_1"/>,
-          <input type="text" id="choices_2"/>
+          <input type="text" id="choices_0" value="____________"/>, 
+          <input type="text" id="choices_1" value="____________"/>,
+          or <input type="text" id="choices_2" value="____________"/>.
           </span>
         </div>
 
@@ -113,7 +93,6 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="/javascripts/jquery.form.js"></script>
     <script src="/javascripts/underscore.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
     <script src="/javascripts/main.js"></script>
 
   </body>

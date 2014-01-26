@@ -14,7 +14,7 @@ module.exports = function(app) {
       app.login({accessKey: req.query.a, secretKey: req.query.s});
     }
     if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
-    else res.render('index', { title: 'HCV' });
+    else res.render('index', { title: 'Noodle' });
   };
 
   routes.add = function(req, res) {
