@@ -13,10 +13,5 @@ class Camera(object):
   def stop(self):
     self.running = False
 
-  def fire(self, event, args):
-  	return
-
-  def do_input(self, event, args):
-    print 'do input camera', args
-    # here is where you take the picture
-    # also upload to mturk?
+  def fire(self, event, i):
+  	print 'camera: fire ', event, i
