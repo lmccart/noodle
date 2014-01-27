@@ -14,6 +14,9 @@ import http
 import clock
 import camera
 
+import json
+import pprint
+
 #logging.basicConfig(level=logging.DEBUG)
 
 class Socket(threading.Thread):
@@ -78,12 +81,17 @@ class Monitor(threading.Thread):
           modals[m].detected_events = []
 
 if __name__ == '__main__':
-  modals = { 'audio': audio.Audio(), 'camera': camera.Camera() }
+  creds_path = os.path.abspath(os.path.join(os.pardir, 'data/config.json'))
+  json_data = open(creds_path)
+  data = json.load(json_data)
+  json_data.close()
+  modals = { 'audio': audio.Audio(), 'camera': camera.Camera(data['aws']) }
   socket = Socket(modals)
   monitor = Monitor(modals, socket)
 
   path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
   #modals['audio'].play(path)
+  modals['camera'].photo("hi")
 
   #path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
   #os.open(path)  
