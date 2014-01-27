@@ -4,7 +4,7 @@ import math
 import wave
 import sys
 
-CHUNK = 1024
+CHUNK = 512
 
 INITIAL_TAP_THRESHOLD = 0.025
 FORMAT = pyaudio.paInt16 
@@ -12,7 +12,6 @@ SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
 RATE = 44100  
 INPUT_BLOCK_TIME = 0.05
-INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 # if we get this many noisy blocks in a row, increase the threshold
 OVERSENSITIVE = 15.0/INPUT_BLOCK_TIME                    
 # if we get this many quiet blocks in a row, decrease the threshold
@@ -98,7 +97,7 @@ class Audio(object):
       devinfo = self.pa.get_device_info_by_index(i)   
       print( "Device %d: %s"%(i,devinfo["name"]) )
 
-      for keyword in ["mic","input"]:
+      for keyword in ["mic","input","Snowflake"]:
         if keyword in devinfo["name"].lower():
           print( "Found an input: device %d - %s"%(i,devinfo["name"]) )
           device_index = i
@@ -117,7 +116,7 @@ class Audio(object):
                              rate = RATE,
                              input = True,
                              input_device_index = device_index,
-                             frames_per_buffer = INPUT_FRAMES_PER_BLOCK)
+                             frames_per_buffer = CHUNK)
 
     return stream
 
@@ -131,7 +130,7 @@ class Audio(object):
   def listen(self):
     print 'l'
     try:
-      block = self.stream.read(INPUT_FRAMES_PER_BLOCK)
+      block = self.stream.read(CHUNK)
     except IOError, e:
       # dammit. 
       self.errorcount += 1
