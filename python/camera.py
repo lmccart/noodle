@@ -121,13 +121,13 @@ class Camera(object):
   # check rec_num from file
   try:
       directory_data = os.listdir("/home/pi")
-      # if photo_rec_num in directory_data:
+      if photo_rec_num in directory_data:
 
-      #     # read file photo_rec_num, make into int() set rec_num equal to it
-      #     vrn = open(photo_rec_num_fp, 'r')
-      #     rec_num = int(vrn.readline())
-      #     print "rec_num is %d" % rec_num
-      #     vrn.close() 
+          # read file photo_rec_num, make into int() set rec_num equal to it
+          vrn = open(photo_rec_num_fp, 'r')
+          # rec_num = int(vrn.readline())
+          # print "rec_num is %d" % rec_num
+          # vrn.close() 
 
       # # if file doesn't exist, create it to avoid issues later
       # else:
