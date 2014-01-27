@@ -221,6 +221,9 @@ function buildActions() {
       createDrop($('#'+new_id+'_'), actions, null);
     }
   });
+
+  // pend
+  $('#submit').show();
 }
 
 function updateMC() {

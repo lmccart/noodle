@@ -19,7 +19,6 @@
     "xml2js": "~0.4.1",
     "underscore": "~1.5.2",
     "socket.io": "~0.9.16",
-    "json2xml": "~0.1.1",
-    "aws-sdk": "~2.0.0-rc8"
+    "json2xml": "~0.1.1"
   }
 }

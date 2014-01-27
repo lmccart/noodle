@@ -10,12 +10,13 @@ module.exports = function(params) {
   var intel = {};
   intel.mturk = null;
   intel.checkInterval = null;
+  intel.bucket;
 
   // attempt login from config file
   fs.readFile('./data/config.json', 'utf8', function(err, data) {
     if (data) data = JSON.parse(data);
-    if (data.accessKeyId && data.secretAccessKey) {
-      intel.login(data);
+    if (data.aws.accessKeyId && data.aws.secretAccessKey) {
+      intel.login(data.aws);
     }
   });
 
@@ -35,12 +36,16 @@ module.exports = function(params) {
     fs.readFile('./data/config.json', 'utf8', function(err, data) {
       if (data) data = JSON.parse(data);
       else data = {};
-      data.accessKeyId = params.accessKeyId;
-      data.secretAccessKey = params.secretAccessKey;
+
+      if (!data.aws) data.aws = {}
+      data.aws.accessKeyId = params.accessKeyId;
+      data.aws.secretAccessKey = params.secretAccessKey;
   
       fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
         if (err) throw err;
       });
+
+      intel.bucket = params.accessKeyId+'_noodle/';
     });
 
     console.log('logged in');
@@ -73,7 +78,7 @@ module.exports = function(params) {
           if (task.query.input[0] == 'camera') {
             if (task.query.input[1] == 'take a photo') {
               console.log("adding photo");
-              result.QuestionForm.Overview[0].Binary[0].DataURL[0] = 'https://s3-us-west-2.amazonaws.com/mc-untitled/'+task.id+'.png';
+              result.QuestionForm.Overview[0].Binary[0].DataURL[0] = 'https://s3-us-west-2.amazonaws.com/'+intel.bucket+task.id+'.jpg';
             }
           }
  
