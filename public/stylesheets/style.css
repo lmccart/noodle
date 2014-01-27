@@ -20,8 +20,8 @@ select, input, textarea {
     margin: 0;
     background: #f8f8f8;
     color:#888;
-    border:none;
-    outline:none;
+    border:0 !important;
+    outline:none !important;
     display: inline-block;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -35,7 +35,8 @@ select, input, textarea {
 }
 
 #query-selection,
-#action-selection {
+#action-selection,
+#submit {
   display: none;
 }
 .button {

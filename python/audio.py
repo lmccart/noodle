@@ -48,12 +48,12 @@ class Audio(object):
     self.registered_events = []
     self.detected_events = []
 
-    self.pa = pyaudio.PyAudio()
+    #self.pa = pyaudio.PyAudio()
     self.tap_threshold = INITIAL_TAP_THRESHOLD
     self.noisycount = MAX_TAP_BLOCKS+1 
     self.quietcount = 0 
     self.errorcount = 0
-    self.stream = self.open_mic_stream()
+    #self.stream = self.open_mic_stream()
 
   def update(self):
     self.listen()
