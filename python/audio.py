@@ -4,7 +4,7 @@ import math
 import wave
 import sys
 
-CHUNK = 1024
+CHUNK = 512
 
 INITIAL_TAP_THRESHOLD = 0.025
 FORMAT = pyaudio.paInt16 
