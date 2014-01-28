@@ -59,6 +59,7 @@ class Audio(object):
     engine.runAndWait()
 
   def play(self, f):
+    path = os.path.abspath(os.path.join(os.pardir, 'uploads/', f))
     print 'audio: playing ', f
     call(["omxplayer", f])
 
