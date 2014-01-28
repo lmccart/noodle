@@ -8,18 +8,27 @@ var inserts = [ 'detects', ',', 'to', ',', 'to', '', 'to', '', 'to', ''];
 var inserts_i = 0;
 
 var triggers = {
-  audio: ['loud noise', 'quiet'],
-  camera: ['movement', 'a face'],
-  clock: ['an hour has passed', 'a minute has passed']
+  audio: ['loud noise', 'quiet', 'speech'],
+  camera: ['movement', 'a face', 'darkness', 'brightness'],
+  clock: ['an hour has passed', 'a minute has passed', 'a day has passed'],
+  gpio: ['pin 0 low', 'pin 0 high', 'pin 1 low', 'pin 1 high', 'pin 2 low', 'pin 2 high', 'pin 3 low', 'pin 3 high', 'pin 4 low', 'pin 4 high']
 };
 
 var inputs = {
   microphone: ['record 3s', 'record 10s'],
-  camera: ['take a photo', 'record 10s of video']
+  camera: ['take a photo', 'record 10s of video'],
+  gpio: ['pin 0', 'pin 1', 'pin 2', 'pin 3', 'pin 4']
 };
 
 var actions = {
-  audio: ['play', 'speak']
+  audio: ['play', 'speak'],
+  gpio: {'pin 0': ['high', 'low'],
+    'pin 1': ['high', 'low'],
+    'pin 2': ['high', 'low'],
+    'pin 3': ['high', 'low'],
+    'pin 4': ['high', 'low']
+  },
+  display: { show: ['image', 'text']}
 };
 
 

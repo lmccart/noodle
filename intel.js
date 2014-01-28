@@ -24,7 +24,7 @@ module.exports = function(params) {
     Title: "Mturk Nodejs module RegisterHITType test"
     , Keywords: "keyword1, keyword2, keyword3" 
     , Description: "Test description"
-    , Reward: {Amount: 0.01, CurrencyCode: "USD"}
+    , Reward: {Amount: 0.50, CurrencyCode: "USD"}
     , AssignmentDurationInSeconds: 120
     , AutoApprovalDelayInSeconds: 3600
     , QualificationRequirement: []
