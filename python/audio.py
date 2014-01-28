@@ -46,6 +46,8 @@ class Audio(object):
     print 'audio: fire ', event, i
     if event[0] == 'play':
       self.play(event[1])
+    if event[0] == 'speak':
+      self.speak(event[1])
  
   def speak(self, phrase):
     print 'speak ', phrase

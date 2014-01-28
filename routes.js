@@ -46,9 +46,10 @@ module.exports = function(app) {
 
   routes.upload = function(req, res) {
     console.log('upload');
-    fs.readFile(req.files.userPhoto.path, function (err, data) {
+    console.log(req)
+    fs.readFile(req.files.upload.path, function (err, data) {
 
-      var imageName = req.files.userPhoto.name
+      var imageName = req.files.upload.name
 
       /// If there's an error
       if(!imageName){

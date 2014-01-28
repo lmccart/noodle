@@ -3,8 +3,31 @@ body {
   font: 24px Helvetica, Arial, sans-serif;
 }
 a {
-  color: #00B7FF;
+  color: #FF6889;
 }
+
+a, a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+form {
+  display: inline;
+}
+
+input[name='upload']{
+  font-size: 14px;
+  padding: 6px;
+  vertical-align: top;
+  width: 200px;
+}
+
+#container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+
 .module {
   margin: 40px 0;
   display: none;
@@ -18,8 +41,7 @@ a {
 select, input, textarea {
     padding:0;
     margin: 0;
-    background: #f8f8f8;
-    color:#888;
+    color:#53CCFC;
     border:0 !important;
     outline:none !important;
     display: inline-block;
@@ -34,15 +56,14 @@ select, input, textarea {
 	font: 24px Helvetica, Arial, sans-serif;
 }
 
+
 #query-selection,
 #action-selection,
 #submit {
   display: none;
 }
 .button {
-	width: 150px;
-	height: 75px;
-	background: #00FFCC;
+	background: #99FF33;
 	color: white;
 	margin: 0 10px 10px 0;
 	padding: 10px;
@@ -51,12 +72,14 @@ select, input, textarea {
 }
 
 .button:hover, .button.selected {
-	background: #99FF33;
+	background: white;
+  color: #99FF33;
+  outline: 2px solid #99FF33;
+  padding: 9px;
 }
 
-a, a:hover {
-	text-decoration: none;
-	color: white;
+.highlight {
+  color: #FF6E43 !important;
 }
 
 .task {

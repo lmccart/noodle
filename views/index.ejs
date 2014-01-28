@@ -7,19 +7,19 @@
   <body>
 
 
-  
+    <div id="wrapper">  
 
-    <div class="container">
+    <div id="container">
         <div id="test" style="display:none"></div>
-		    <div>Ok <%= title %>,</div>
+		    <div class="highlight">Ok <%= title %>,</div>
 
 		    <div class="module" id="trigger-selection">
           When the <span id="triggers"></span>
         </div>
 
         <div class="module" id="input-selection">
-          First
-          <span id="input-type"></span>,  
+          first use the 
+          <span id="input-type"></span>  
         </div>
 
         <div class="module" id="query-selection">  
@@ -31,61 +31,22 @@
             <option value="mc">multiple choice</option>
           </select>
           question: 
-          "<input id="question" name="question" value="____________"/>",
-          <span class="submodule">with choices 
+          "<input id="question" name="question" value="____________"/>".
+          <span class="submodule"><br>(with choices 
           "<input class="mc" type="text" id="choices_0" value="____________"/>", 
           "<input class="mc" type="text" id="choices_1" value="____________"/>",
-          or "<input class="mc" type="text" id="choices_2" value="____________"/>".
+          or "<input class="mc" type="text" id="choices_2" value="____________"/>")
           </span>
         </div>
 
         <div class="module" id="action-selection"></div>
 
 
-        <div id='submit' class='button'>OK!</div>
-
-<!-- 
-		    	<div class="submodule category">
-			    	<h2>Select the desired trigger category</h2>
-			    	<div class='options'>
-			        <div class='button'>audio</div>
-			        <div class='button'>video</div>
-			        <div class='button'>GPIO</div>
-			        <div class='button'>date/time</div>
-			      </div>
-		      </div>
-
-		    	<div class="submodule specific audio">
-			    	<h2>Select the desired specific trigger</h2>
-			    	<div class='options'>
-			        <div class='button'>noise</div>
-			        <div class='button'>silence</div>
-			    	</div>
-		      </div>
-	      </div>
-
-		    <div class="module" id="query-selection">
-		    	<h2>Input your desired query</h2>
-		    	<textarea id="query" cols="40" rows="5" name="query"></textarea>
-		    	<div class='options'>
-		      </div>
-			    <div id='submit' class='button'>OK!</div>
-	      </div>
-
-		    <div class="module" id="action-selection">
-		    	<h2>Select the desired action(s)</h2>
-	        <p class="lead"></p>
-	      </div>
-
-        <form method='post' action='/upload' enctype='multipart/form-data'>
-          <input type='file' name='image'/>
-          <input type='submit' />
-        </form> -->
+        <span id='submit' class='button'>Ok!</span>
 
 
-
-    </div><!-- /.container -->
-
+    </div><!-- /#container -->
+    </div><!-- /#wrapper -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

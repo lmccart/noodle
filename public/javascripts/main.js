@@ -4,15 +4,13 @@ var task = {
   actions: []
 };
 
+var inserts = [ 'detects', ',', 'to', ',', 'to', '', 'to', '', 'to', ''];
+var inserts_i = 0;
+
 var triggers = {
   audio: ['loud noise', 'quiet'],
-  camera: {
-    movement: ['is bigger than', 'makes more sense than'],
-    faces: ['is bigger than', 'makes more sense than']
-  },
-  clock: {
-    time: ['an hour has passed', 'a minute has passed']
-  }
+  camera: ['movement', 'a face'],
+  clock: ['an hour has passed', 'a minute has passed']
 };
 
 var inputs = {
@@ -21,7 +19,7 @@ var inputs = {
 };
 
 var actions = {
-  audio: ['play']
+  audio: ['play', 'speak']
 };
 
 
@@ -78,23 +76,7 @@ window.onload=function(){
     });
   });
 
-  $('input').on('focus', function(){
-    $(this).val('');
-    //resizeForContent('#'+$(this).attr('id'), $(this).val());
-  });
-
-  $('input').on('focusout', function(){
-    if ($(this).val().length == 0) $(this).val('____________');
-    resizeForContent('#'+$(this).attr('id'), $(this).val());
-  });
-
-  $('input').on('keydown', function(){
-    resizeForContent('#'+$(this).attr('id'), $(this).val()+'m');
-  });
-
-  $('input').each(function(e) {
-    resizeForContent('#'+$(this).attr('id'), $(this).val());
-  });
+  hookInput();
 
   $('#question-type').change(function() {
     resizeForContent('#'+$(this).attr('id'), $('#question-type option:selected').text());
@@ -148,9 +130,16 @@ function createDrop(elt, obj, cb) {
     var new_id = elt.attr('id') + '_';
     if (is_arr) {
       eraseAllAfter(elt);
-      if (keys[0] == 'play') {
-        elt.parent().append('<form id="'+new_id+'_uploadForm" enctype="multipart/form-data" action="/upload" method="post"><input type="file" id="'+new_id+'_userPhotoInput" name="userPhoto" /></form><span id="'+new_id+'_status" />');
+      addInserts(elt.parent());
+      if ($(this).val() == 'play') {
+        elt.parent().append(' <form id="'+new_id+'_uploadForm" enctype="multipart/form-data" action="/upload" method="post"><input type="file" id="'+new_id+'_uploadInput" name="upload" /></form><span id="'+new_id+'_status" />.');
         hookUpload(new_id);
+      }
+
+      else if ($(this).val() == 'speak') {
+        elt.parent().append(' <input type="text" class="part" id="'+new_id+'" value="____________"/>.');
+        resizeForContent('#'+new_id, $('#'+new_id).val());
+        hookInput();
       }
       
       if (cb) cb();
@@ -159,11 +148,19 @@ function createDrop(elt, obj, cb) {
       });
     } else {
       eraseAllAfter(elt);
+      addInserts(elt.parent());
       elt.parent().append(' <span class="part" id="'+new_id+'"></span>');
       elt.parent().append(createDrop($('#'+new_id), obj[$(this).val()], cb));
     }
   });
   
+}
+
+function addInserts(elt) {
+    if (inserts_i < inserts.length) {
+      elt.append(' <span class="inserts" id="inserts_'+inserts_i+'">'+inserts[inserts_i]+'</span>');
+      inserts_i++;
+    }
 }
 
 function resizeForContent(selector, content) {
@@ -182,6 +179,8 @@ function eraseAllAfter(elt) {
       found = true;
     }
   }
+
+  inserts_i = $('body').find('.inserts').length;
 }
 
 function startQuery() {
@@ -217,7 +216,7 @@ function buildActions() {
   _.each(choices, function(c) {
     if (c != '') {
       var new_id = 'action_'+c;
-      $('#action-selection').append('<div class="action" id="'+new_id+'">If the human answers '+c+': <span class="part" id="'+new_id+'_"></span></div>');
+      $('#action-selection').append('<div class="action" id="'+new_id+'">If the answer is '+c+': use the <span class="part" id="'+new_id+'_"></span></div>');
       createDrop($('#'+new_id+'_'), actions, null);
     }
   });
@@ -237,7 +236,7 @@ function updateMC() {
   for (var i=0; i<Math.max(adivs.length, choices.length); i++) {
     if (i < choices.length) {
       var new_id = 'action_'+choices[i];
-      var new_div = '<div class="action" id="'+new_id+'">If the human answers '+choices[i]+': <span class="part" id="'+new_id+'_"></span></div>';
+      var new_div = '<div class="action" id="'+new_id+'">If the answer is '+choices[i]+': use the <span class="part" id="'+new_id+'_"></span></div>';
         
       if (i < adivs.length && adivs[i].id != new_id) {
         $(new_div).insertBefore('#'+adivs[i].id); 
@@ -265,7 +264,7 @@ function hookUpload(id) {
   // Check to see when a user has selected a file                                                                                                                
   var timerId;
   timerId = setInterval(function() {
-    if($('#'+id+'_userPhotoInput').val() !== '') {
+    if($('#'+id+'_uploadInput').val() !== '') {
       clearInterval(timerId);
       $('#'+id+'_uploadForm').submit();
     }
@@ -294,4 +293,24 @@ function hookUpload(id) {
     return false;
   });
 
+}
+
+function hookInput() {
+  $('input').on('focus', function(){
+    $(this).val('');
+    //resizeForContent('#'+$(this).attr('id'), $(this).val());
+  });
+
+  $('input').on('focusout', function(){
+    if ($(this).val().length == 0) $(this).val('____________');
+    resizeForContent('#'+$(this).attr('id'), $(this).val());
+  });
+
+  $('input').on('keydown', function(){
+    resizeForContent('#'+$(this).attr('id'), $(this).val()+'m');
+  });
+
+  $('input').each(function(e) {
+    resizeForContent('#'+$(this).attr('id'), $(this).val());
+  });
 }
