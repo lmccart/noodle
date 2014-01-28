@@ -30,7 +30,7 @@ class Camera(object):
 
   def fire(self, event, name):
     print 'camera: fire ', event, name
-    if event[0] == 'take a photo' || event == 'take a photo':
+    if event[0] == 'take a photo' or event == 'take a photo':
       self.photo(name)
 
   def photo(self, name):
