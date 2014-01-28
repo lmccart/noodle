@@ -7,7 +7,7 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 # set initial variables
-base_vidfile = "raspistill -t 500 -o "
+base_vidfile = "raspistill -t 1 -hf -vf -n -w 648 -h 486 -o "
 
 class Camera(object):
   def __init__(self, aws):
