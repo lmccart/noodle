@@ -61,8 +61,8 @@ class Audio(object):
 
   def play(self, f):
     path = os.path.abspath(os.path.join(os.pardir, 'uploads/', f))
-    print 'audio: playing ', f
-    call(["omxplayer", f])
+    print 'audio: playing ', path
+    call(["omxplayer", path])
 
   def find_input_device(self):
     device_index = None            
