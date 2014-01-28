@@ -73,21 +73,24 @@ module.exports = function(server) {
   };
 
   scheduler.fireTask = function(task) {
-    console.log('fire '+task.query.answer);
-    var a;
-    if (task.query.type == 'sa') a = 0;
-    else if (task.query.type == 'tf') a = (task.query.answer == 'Yes') ? 0 : 1;
-    else if (task.query.type == 'mc') a = parseInt(task.query.answer.substring(1), 10);
-    console.log("a = "+a);
+    if (!task.fired) {
+      task.fired = true;
+      console.log('fire '+task.query.answer);
+      var a;
+      if (task.query.type == 'sa') a = 0;
+      else if (task.query.type == 'tf') a = (task.query.answer == 'Yes') ? 0 : 1;
+      else if (task.query.type == 'mc') a = parseInt(task.query.answer.substring(1), 10);
+      console.log("a = "+a);
 
-    console.log(task.actions);
-    socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1), id:task.id });
+      console.log(task.actions);
+      socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1), id:task.id });
 
-    scheduler.removeTask(task.id);
+      scheduler.removeTask(task.id);
 
-    fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
-      if (err) throw err;
-    });
+      fs.writeFile('./data/tasks.json', JSON.stringify(scheduler.tasks), function (err) {
+        if (err) throw err;
+      });
+    }
   };
 
   scheduler.handleEvent = function(data) {
