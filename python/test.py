@@ -92,7 +92,7 @@ if __name__ == '__main__':
   path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
   modals['audio'].speak('hello my name is noodle')
   #modals['audio'].play(path)
-  #modals['camera'].photo("hi")
+  modals['camera'].photo("hitest")
 
   #path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
   #os.open(path)  
