@@ -71,6 +71,10 @@ select, input, textarea {
 	cursor: pointer;
 }
 
+.meta {
+  color: #CFCFCF;
+}
+
 .button:hover, .button.selected {
 	background: white;
   color: #99FF33;

@@ -137,7 +137,7 @@ function createDrop(elt, obj, cb) {
       }
 
       else if ($(this).val() == 'speak') {
-        elt.parent().append(' <input type="text" class="part" id="'+new_id+'" value="____________"/>.');
+        elt.parent().append(' "<input type="text" class="part" id="'+new_id+'" value="____________"/>".');
         resizeForContent('#'+new_id, $('#'+new_id).val());
         hookInput();
       }

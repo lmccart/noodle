@@ -11,7 +11,7 @@
 
     <div id="container">
 
-      <div class="highlight">Noodle tasks:</div><br>
+      <div class="highlight">Noodle to dos:</div><br>
 
       <% tasks.forEach(function(t, index) { %>
         <div class="task" id=<%= t.id %>>
@@ -19,7 +19,7 @@
           <% if (t.query.type == 'mc') {
             var choices = t.query.choices;
           } else if (t.query.type == 'tf') {
-            var choices = ['true', 'false'];
+            var choices = ['yes', 'no'];
           } else if (t.query.type == 'sa') {
             var choices = ['anything'];
           } %>
@@ -32,7 +32,7 @@
             If the answer is <%= choices[i] %>, use the <%= t.actions[i][0] %>
             to <%= t.actions[i][1] %> <%= t.actions[i][2] %>.
           <% } %><br><br>
-          ID: <%= t.id %>, created: <%= t.date %><br><br>
+          <div class="meta">ID: <%= t.id %>, created: <%= t.date %><br><br></div>
           <div class='remove button'>Cancel!</div>
         </div>
         
