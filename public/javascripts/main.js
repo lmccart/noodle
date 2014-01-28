@@ -40,7 +40,7 @@ window.onload=function(){
 
     // add query
     task.query.input = [];
-    $('#input-selection .part').each(function(e) {
+    $('#input-selection .part select').each(function(e) {
       task.query.input.push($(this).val());
     });
     task.query.question = $('input#question').val();
