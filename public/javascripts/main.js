@@ -200,17 +200,22 @@ function startQuery() {
   });
 
   $('#query-selection input.mc').change(function() {
-    updateMC();
+    buildActions();
   });
 
 }
 
 function buildActions() {
+  $('#action-selection').empty();
   var choices = [];
   if (task.query.type === 'tf') {
-    choices = ['true', 'false'];
+    choices = ['yes', 'no'];
   } else if (task.query.type === 'sa') {
     choices = ['anything'];
+  } else if (task.query.type === 'mc') {
+    $('#query-selection input.mc').each(function(e) {
+      if ($(this).val().indexOf('____') == -1 && $(this).val().length > 0) choices.push($(this).val());
+    });
   }
 
   _.each(choices, function(c) {
@@ -225,36 +230,36 @@ function buildActions() {
   $('#submit').show();
 }
 
-function updateMC() {
-  var choices = [];
-  $('#query-selection input.mc').each(function(e) {
-    if ($(this).val().indexOf('____') == -1 && $(this).val().length > 0) choices.push($(this).val());
-  });
+// function updateMC() {
+//   var choices = [];
+//   $('#query-selection input.mc').each(function(e) {
+//     if ($(this).val().indexOf('____') == -1 && $(this).val().length > 0) choices.push($(this).val());
+//   });
 
-  var adivs = $('#action-selection .action');
+//   var adivs = $('#action-selection .action');
   
-  for (var i=0; i<Math.max(adivs.length, choices.length); i++) {
-    if (i < choices.length) {
-      var new_id = 'action_'+choices[i];
-      var new_div = '<div class="action" id="'+new_id+'">If the answer is '+choices[i]+': use the <span class="part" id="'+new_id+'_"></span></div>';
+//   for (var i=0; i<Math.max(adivs.length, choices.length); i++) {
+//     if (i < choices.length) {
+//       var new_id = 'action_'+choices[i];
+//       var new_div = '<div class="action" id="'+new_id+'">If the answer is '+choices[i]+': use the <span class="part" id="'+new_id+'_"></span></div>';
         
-      if (i < adivs.length && adivs[i].id != new_id) {
-        $(new_div).insertBefore('#'+adivs[i].id); 
-        createDrop($('#'+new_id+'_'), actions, null);
-      } else if (i >= adivs.length) {
-        $('#action-selection').append(new_div);
-        createDrop($('#'+new_id+'_'), actions, null);
-      }
-    } 
-  }
+//       if (i < adivs.length && adivs[i].id != new_id) {
+//         $(new_div).insertBefore('#'+adivs[i].id); 
+//         createDrop($('#'+new_id+'_'), actions, null);
+//       } else if (i >= adivs.length) {
+//         $('#action-selection').append(new_div);
+//         createDrop($('#'+new_id+'_'), actions, null);
+//       }
+//     } 
+//   }
 
-  adivs = $('#action-selection .action');
-  for (var i=0; i<adivs.length; i++) {
-    if (!_.contains(choices, adivs[i].id.substring(7))) {
-      $('#'+adivs[i].id).remove();
-    }
-  }
-}
+//   adivs = $('#action-selection .action');
+//   for (var i=0; i<adivs.length; i++) {
+//     if (!_.contains(choices, adivs[i].id.substring(7))) {
+//       $('#'+adivs[i].id).remove();
+//     }
+//   }
+// }
 
 
 
