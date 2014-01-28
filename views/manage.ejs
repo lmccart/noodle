@@ -1,50 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>manage</title>
+    <title>manage noodle</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
 
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">HCV</a>
+    <div id="wrapper">  
+
+    <div id="container">
+
+      <div class="highlight">Noodle tasks:</div><br>
+
+      <% tasks.forEach(function(t, index) { %>
+        <div class="task" id=<%= t.id %>>
+
+          <% if (t.query.type == 'mc') {
+            var choices = t.query.choices;
+          } else if (t.query.type == 'tf') {
+            var choices = ['true', 'false'];
+          } else if (t.query.type == 'sa') {
+            var choices = ['anything'];
+          } %>
+
+          When the <%= t.trigger[0] %> detects <%= t.trigger[1] %>,
+          first use the <%= t.query.input[0] %> to <%= t.query.input[1] %>,
+          then decide the answer to the <%= t.query.type %> question:
+          <%= t.query.question %>.
+          <% for(var i=0; i<t.actions.length; i++) {%>
+            If the answer is <%= choices[i] %>, use the <%= t.actions[i][0] %>
+            to <%= t.actions[i][1] %> <%= t.actions[i][2] %>.
+          <% } %><br><br>
+          ID: <%= t.id %>, created: <%= t.date %><br><br>
+          <div class='remove button'>Cancel!</div>
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <!--<li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>-->
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
-
-    <div class="container">
-
-      <div class="starter-template">
-		    <h1>MANAGE</h1>
-
-        <% tasks.forEach(function(t, index) { %>
-          <div class="task" id=<%= t.id %>>
-            id: <%= t.id %><br>
-            status: <%= t.status %><br>
-            trigger: <%= t.trigger %><br>
-            created: <%= t.date %><br>
-            <div class='remove button'>remove</div>
-          </div>
-          
-        <% }); %>
-
-      </div>
+        
+      <% }); %>
 
     </div><!-- /.container -->
 

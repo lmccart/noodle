@@ -40,10 +40,10 @@ window.onload=function(){
 
     // add query
     task.query.input = [];
-    $('#input-selection select').each(function(e) {
+    $('#input-selection .part').each(function(e) {
       task.query.input.push($(this).val());
     });
-    task.query.question = $('textarea#question').val();
+    task.query.question = $('input#question').val();
 
     // add choices for mc
     if (task.query.type === 'mc') {
