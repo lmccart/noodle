@@ -57,7 +57,7 @@ window.onload=function(){
     // add choices for mc
     if (task.query.type === 'mc') {
       task.query.choices = [];
-      $('#query-selection input').each(function(e) {
+      $('#query-selection input.mc').each(function(e) {
         task.query.choices.push($(this).val());
       });
     }
