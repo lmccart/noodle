@@ -5,6 +5,7 @@ import wave
 import sys
 from subprocess import call
 import pyttsx
+import os
 
 CHUNK = 512
 SHORT_NORMALIZE = (1.0/32768.0)
