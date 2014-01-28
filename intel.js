@@ -45,7 +45,7 @@ module.exports = function(params) {
         if (err) throw err;
       });
 
-      intel.bucket = params.accessKeyId+'_noodle/';
+      intel.bucket = params.accessKeyId.toLowerCase()+'_noodle/';
     });
 
     console.log('logged in');
@@ -78,7 +78,7 @@ module.exports = function(params) {
           if (task.query.input[0] == 'camera') {
             if (task.query.input[1] == 'take a photo') {
               console.log("adding photo");
-              result.QuestionForm.Overview[0].Binary[0].DataURL[0] = 'https://s3-us-west-2.amazonaws.com/'+intel.bucket+task.id+'.jpg';
+              result.QuestionForm.Overview[0].Binary[0].DataURL[0] = 'https://s3.amazonaws.com/'+intel.bucket+task.id+'.jpg';
             }
           }
  
