@@ -29,9 +29,9 @@
           When the <%= t.trigger[0] %> detects <%= t.trigger[1] %>,
           first use the <%= t.query.input[0] %> to <%= t.query.input[1] %>,
           then decide the answer to the <%= t.query.type %> question:
-          <%= t.query.question %>.
+          "<%= t.query.question %>".
           <% for(var i=0; i<t.actions.length; i++) {%>
-            If the answer is <%= choices[i] %>, use the <%= t.actions[i][0] %>
+            If the answer is "<%= choices[i] %>", use the <%= t.actions[i][0] %>
             to <%= t.actions[i][1] %> <%= t.actions[i][2] %>.
           <% } %><br><br>
           <div class="meta">ID: <%= t.id %>, created: <%= t.date %><br><br></div>
