@@ -4,6 +4,9 @@ import math
 import wave
 import sys
 
+import urllib, os
+import subprocess
+
 CHUNK = 512
 
 INITIAL_TAP_THRESHOLD = 0.025
@@ -71,6 +74,22 @@ class Audio(object):
     print 'audio: fire ', event, i
     if event[0] == 'play':
       self.play(event[1])
+
+
+  def getGoogleSpeechURL(self, phrase):
+      googleTranslateURL = "http://translate.google.com/translate_tts?tl=en&"
+      parameters = {'q': phrase}
+      data = urllib.urlencode(parameters)
+      googleTranslateURL = "%s%s" % (googleTranslateURL,data)
+      return googleTranslateURL
+
+  def speakSpeechFromText(self, phrase):
+      #googleSpeechURL = self.getGoogleSpeechURL(phrase)
+      googleSpeechURL = "http://translate.google.com/translate_tts?tl=english&q=" + phrase
+      subprocess.call(["mplayer",googleSpeechURL], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+ 
+      #self.downloadFile(googleSpeechURL,"tts.mp3")
+      #os.system("mplayer tts.mp3 -af extrastereo=0 &")
 
   def play(self, f):
     print 'audio: playing ', f

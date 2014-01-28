@@ -90,6 +90,7 @@ if __name__ == '__main__':
   monitor = Monitor(modals, socket)
 
   path = os.path.abspath(os.path.join(os.pardir, 'uploads/test.wav'))
+  modals['audio'].speakSpeechFromText('hello my name is noodle')
   #modals['audio'].play(path)
   #modals['camera'].photo("hi")
 
