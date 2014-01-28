@@ -47,7 +47,10 @@ class Audio(object):
     if event[0] == 'play':
       self.play(event[1])
     if event[0] == 'speak':
-      self.speak(event[1])
+      if event[1] == 'the answer':
+        self.speak(i)
+      else:
+        self.speak(event[1])
  
   def speak(self, phrase):
     print 'speak ', phrase

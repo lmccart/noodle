@@ -55,7 +55,7 @@ class Socket(threading.Thread):
     print 'fire', args
     m = args[1]['modal']
     e = args[1]['event']
-    i = args[1]['id']
+    i = args[1]['extra']
     if m in modals.keys():
       modals[m].fire(e, i)
 

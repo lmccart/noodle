@@ -83,7 +83,7 @@ module.exports = function(server) {
       console.log("a = "+a);
 
       console.log(task.actions);
-      socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1), id:task.id });
+      socket.emit('fire', { modal: task.actions[a][0], event: task.actions[a].slice(1), extra:task.query.answer });
 
       scheduler.removeTask(task.id);
 
@@ -107,7 +107,7 @@ module.exports = function(server) {
 
         // solicit python input
         if (task.query.input.length > 0) {
-          socket.emit('fire', { modal:task.query.input[0], event:task.query.input[1], id:task.id });
+          socket.emit('fire', { modal:task.query.input[0], event:task.query.input[1], extra:task.id });
         }
 
         // sync storage
