@@ -56,6 +56,7 @@ class Camera(object):
       
       k = Key(self.bucket)
       k.key = name+'.jpg'
+      k.set_acl('public-read')
       k.set_contents_from_filename(path)
 
 
