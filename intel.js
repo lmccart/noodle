@@ -14,9 +14,11 @@ module.exports = function(params) {
 
   // attempt login from config file
   fs.readFile('./data/config.json', 'utf8', function(err, data) {
-    if (data) data = JSON.parse(data);
-    if (data.aws.accessKeyId && data.aws.secretAccessKey) {
-      intel.login(data.aws);
+    if (data) {
+      data = JSON.parse(data);
+      if (data.aws.accessKeyId && data.aws.secretAccessKey) {
+        intel.login(data.aws);
+      }
     }
   });
 
@@ -31,6 +33,7 @@ module.exports = function(params) {
   };
 
   intel.login = function(params) {
+    console.log(params);
     intel.mturk =  require('./mturk')({creds: params, sandbox: false});
 
     fs.readFile('./data/config.json', 'utf8', function(err, data) {
@@ -41,6 +44,7 @@ module.exports = function(params) {
       data.aws.accessKeyId = params.accessKeyId;
       data.aws.secretAccessKey = params.secretAccessKey;
   
+      console.log(data)
       fs.writeFile('./data/config.json', JSON.stringify(data), function (err) {
         if (err) throw err;
       });

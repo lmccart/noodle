@@ -9,9 +9,8 @@ module.exports = function(app) {
   var routes = {};
 
   routes.index = function(req, res) {
-    console.log ("ind"+req.query.s);
     if (req.query.s && req.query.a) {
-      app.login({accessKey: req.query.a, secretKey: req.query.s});
+      app.login({accessKeyId: req.query.a, secretAccessKey: req.query.s});
     }
     if (!app.isLoggedIn()) res.render('login', { title: 'LOGIN' });
     else res.render('index', { title: 'Noodle' });

@@ -98,7 +98,7 @@ window.onload=function(){
 
   // login page
   $('#login').click(function(e){
-    window.location = './?s='+$('input#secret_key').val()+'&a='+$('input#access_key').val();
+    window.location = "./?a="+encodeURIComponent($('input#access_key_id').val())+"&s="+encodeURIComponent($('input#secret_access_key').val());
   });
 
   // manage page
